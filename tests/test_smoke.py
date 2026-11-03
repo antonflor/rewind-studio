@@ -23,6 +23,15 @@ class RewindTests(unittest.TestCase):
             for png in Path(tmp).glob("slide-*.png"):
                 self.assertGreater(png.stat().st_size, 1000)
 
+    def test_single_page_infographic(self):
+        example = json.loads(Path("examples/odyssey-2026.json").read_text())
+        with tempfile.TemporaryDirectory() as tmp:
+            img = rewind.render_infographic(example, tmp, "Odyssey", "odyssey", "donation", None)
+            self.assertTrue(img.exists())
+            from PIL import Image
+            with Image.open(img) as im:
+                self.assertEqual(im.size, (1080, 1350))
+
     def test_read_only_extract(self):
         with tempfile.TemporaryDirectory() as tmp:
             backup = Path(tmp) / "test-backup.db"
