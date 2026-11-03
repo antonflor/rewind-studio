@@ -17,5 +17,7 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Test example render
         run: python rewind.py render --data examples/odyssey-2026.json --name "Sample Server" --theme forest --cta none --out output/smoke
+      - name: Test infographic export
+        run: python rewind.py render --data examples/odyssey-2026.json --name "Sample Server" --theme aurora --cta donation --format infographic --out output/infographic
       - name: Verify outputs
-        run: test "$(find output/smoke -name 'slide-*.png' | wc -l)" -eq 5
+        run: test "$(find output/smoke -name 'slide-*.png' | wc -l)" -eq 5 && test -s output/infographic/infographic.png
