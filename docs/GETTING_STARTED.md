@@ -113,9 +113,21 @@ python rewind.py render --data stats.json --name "The Vault" --theme my-theme --
 
 You can also use `--theme "/path/to/custom-theme.json"`. See [template reference](../templates/README.md) for supported keys and optional background images.
 
-## 8. Post to Instagram
+## 8. Generate a single-page infographic
 
-Upload the five generated PNGs as a carousel, preserving their order. Instagram Stories and Reels are taller than these PNGs; this version **does not yet create an MP4**. To create a video manually, import PNGs into an editor, animate the movement/transitions, and export a vertical 1080 × 1920 MP4.
+Instead of five individual slides, combine the same data into one 1080 × 1350 PNG:
+
+```bash
+python rewind.py render --data stats.json --name "The Vault" --theme odyssey --cta none --format infographic --out output/one-page
+```
+
+Look for `output/one-page/infographic.png`. With `--cta donation`, the closing panel mentions PayPal, Zelle, and DM; with `--cta none`, it simply thanks viewers. Set `--format both` to generate the one-page image **and** all five slides in one command.
+
+Both formats support names other than Odyssey and the custom JSON templates in `templates/`.
+
+## 9. Post to Instagram
+
+Upload the five generated PNGs as a carousel, preserving their order, **or** upload the standalone `infographic.png` as one feed post. Instagram Stories and Reels are taller than these PNGs; this version **does not yet create an MP4**. To create a video manually, import PNGs into an editor, animate the movement/transitions, and export a vertical 1080 × 1920 MP4.
 
 ## Common problems
 
