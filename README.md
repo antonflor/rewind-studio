@@ -1,5 +1,7 @@
 # Rewind Studio
 
+> **Open-source, local-first Plex Year in Review generator.** Create Instagram-ready slides or a single-page infographic from a safe Plex database backup. Custom themes, any server name, optional donation message, and no hosted service required.
+
 **Your server. Your story.** Turn aggregated Plex playback statistics into an Instagram-ready, five-slide yearly recap **or a single-page infographic**. Works with **any server name**; Odyssey is merely the example dataset.
 
 ![Illustrative Rewind Studio slide layouts](docs/images/slide-preview.svg)
@@ -20,6 +22,24 @@ python rewind.py render --data examples/odyssey-2026.json --name "My Server" --t
 ```
 
 Your images appear at `output/slide-1.png` through `slide-5.png`.
+
+### Choose your output format
+
+Use `--format` with **any** server name and any built-in or custom theme.
+
+| Option | Files generated | Best for |
+|---|---|---|
+| `--format slides` | `slide-1.png` through `slide-5.png` | Instagram carousel (default) |
+| `--format infographic` | `infographic.png` | Single Instagram feed image |
+| `--format both` | All six PNG files | Both layouts in one run |
+
+```bash
+python rewind.py render --data stats.json --name "The Vault" --format slides --out output
+python rewind.py render --data stats.json --name "The Vault" --format infographic --out output
+python rewind.py render --data stats.json --name "The Vault" --format both --out output
+```
+
+All exports are 1080 × 1350 PNGs. Donations are optional using `--cta none|thanks|donation`.
 
 ### Single-page infographic (new)
 
