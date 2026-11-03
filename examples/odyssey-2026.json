@@ -1,0 +1,50 @@
+{
+  "year": 2026,
+  "through": "Nov 03, 2026",
+  "plays": 6203,
+  "viewers": 30,
+  "unique_movies": 553,
+  "unique_shows": 88,
+  "hours": 4970.6,
+  "tib": 11.15,
+  "library": {
+    "1": 1760,
+    "2": 178,
+    "4": 9645,
+    "10": 5031
+  },
+  "added": {
+    "1": 176,
+    "2": 36,
+    "4": 1089
+  },
+  "top_movies": [
+    {
+      "title": "PAW Patrol: The Mighty Movie",
+      "plays": 26
+    },
+    {
+      "title": "The Super Mario Galaxy Movie",
+      "plays": 25
+    },
+    {
+      "title": "Zootopia 2",
+      "plays": 23
+    }
+  ],
+  "top_shows": [
+    {
+      "title": "Modern Family",
+      "plays": 565
+    },
+    {
+      "title": "The Big Bang Theory",
+      "plays": 546
+    },
+    {
+      "title": "Bluey (2018)",
+      "plays": 510
+    }
+  ],
+  "library_size_label": "~10 TiB"
+}
