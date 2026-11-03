@@ -141,11 +141,65 @@ def render(data,out,name,theme,cta,cta_text):
   draw_text(d,60,1210,label("closing_footer","POWERED BY THE COMMUNITY"),p["accent"],26,True)
  page(5,ending)
 
+
+def render_infographic(data,out,name,theme,cta,cta_text):
+ """Render one portrait 4:5 overview from the same aggregate data and theme."""
+ from PIL import ImageOps
+ colors,labels,bg_path=load_template(theme)
+ p=colors
+ out=Path(out);out.mkdir(parents=True,exist_ok=True)
+ im=Image.new("RGB",SIZE,p["bg"])
+ if bg_path:
+  with Image.open(bg_path) as source:
+   im=Image.blend(im,ImageOps.fit(source.convert("RGB"),SIZE),0.15)
+ d=ImageDraw.Draw(im)
+ W,H=SIZE
+ def tx(x,y,txt,size=30,color=None,bold=False,maxwidth=940):
+  draw_text(d,x,y,str(txt),color or p["fg"],size,bold,maxwidth)
+ def card(x,y,w,h):
+  d.rounded_rectangle((x,y,x+w,y+h),radius=22,fill=p["panel"],outline="#344951",width=2)
+ def stat(x,y,w,label,value):
+  card(x,y,w,158)
+  tx(x+22,y+21,label.upper(),22,p["secondary"],True,w-44)
+  tx(x+22,y+64,value,61,p["fg"],True,w-44)
+ def rule(y):
+  d.line((65,y,1015,y),fill=p["secondary"],width=2)
+ d.rectangle((0,0,1080,11),fill=p["accent"])
+ tx(65,49,name.upper(),36,p["secondary"],True)
+ tx(65,111,labels.get("cover_title","REWIND")+" "+str(data["year"]),79,p["accent"],True)
+ tx(66,218,"YOUR YEAR IN STREAMING  /  THROUGH "+data.get("through","").upper(),22,p["secondary"])
+ rule(264)
+ stat(65,300,460,"Viewer accounts",f'{data.get("viewers",0):,}')
+ stat(555,300,460,"Playback events",f'{data.get("plays",0):,}')
+ stat(65,480,460,"Estimated streaming hours",f'{data.get("hours",0):,.0f}')
+ stat(555,480,460,"Plex media traffic",f'{data.get("tib",0):,.2f} TiB')
+ tx(65,687,labels.get("titles_title","MOST PLAYED"),35,p["accent"],True)
+ card(65,749,460,248);card(555,749,460,248)
+ tx(88,771,"TOP TV SHOWS",22,p["secondary"],True)
+ tx(578,771,"TOP MOVIES",22,p["secondary"],True)
+ for x,key in [(88,"top_shows"),(578,"top_movies")]:
+  for i,item in enumerate(data.get(key,[])[:3]):
+   y=814+i*58
+   tx(x,y,f'{i+1}. {item.get("title","Unknown")}',24,p["fg"],True,390)
+   tx(x,y+29,str(item.get("plays",0))+" plays",17,p["secondary"])
+ tx(65,1035,labels.get("library_title","THE LIBRARY"),35,p["accent"],True)
+ lib=data.get("library",{})
+ tx(65,1101,f'{lib.get("1",0):,} movies   •   {lib.get("2",0):,} series   •   {lib.get("4",0):,} episodes',27,p["fg"],True)
+ message=(cta_text or "Help keep it going next year!") if cta=="donation" else ("Thanks for an amazing year!" if cta=="thanks" else "Your server. Your story.")
+ d.rounded_rectangle((65,1170,1015,1264),radius=20,fill=p["panel"],outline=p["accent"],width=2)
+ tx(88,1188,message,28,p["accent"],True,910)
+ if cta=="donation":tx(88,1227,"PAYPAL  /  ZELLE  /  DM",20,p["secondary"],True)
+ else:tx(88,1227,"THANKS FOR WATCHING",20,p["secondary"])
+ tx(65,1296,"Playback events may include partial watches. Statistics reflect a database snapshot.",17,p["secondary"])
+ path=out/"infographic.png"
+ im.save(path)
+ return path
+
 def main():
  ap=argparse.ArgumentParser(description="Local Plex Rewind PNG slide generator")
  sub=ap.add_subparsers(dest="command",required=True)
  x=sub.add_parser("extract");x.add_argument("--db",required=True);x.add_argument("--year",type=int,required=True);x.add_argument("--out",default="stats.json")
- r=sub.add_parser("render");r.add_argument("--data",required=True);r.add_argument("--out",default="output");r.add_argument("--name",default="My Media Server");r.add_argument("--theme",default="odyssey",help="Built-in theme, template name, or path to a template JSON");r.add_argument("--cta",choices=["none","thanks","donation"],default="none");r.add_argument("--cta-text")
+ r=sub.add_parser("render");r.add_argument("--data",required=True);r.add_argument("--out",default="output");r.add_argument("--name",default="My Media Server");r.add_argument("--theme",default="odyssey",help="Built-in theme, template name, or path to a template JSON");r.add_argument("--cta",choices=["none","thanks","donation"],default="none");r.add_argument("--cta-text");r.add_argument("--format",choices=["slides","infographic","both"],default="slides",help="PNG output layout")
  sub.add_parser("templates",help="List built-in and local template files")
  a=ap.parse_args()
  if a.command=="templates":
@@ -155,5 +209,11 @@ def main():
  if a.command=="extract":
   data=extract(a.db,a.year);Path(a.out).write_text(json.dumps(data,indent=2));print("Saved",a.out)
  else:
-  render(json.loads(Path(a.data).read_text()),a.out,a.name,a.theme,a.cta,a.cta_text);print("Saved 5 slides in",a.out)
+  data=json.loads(Path(a.data).read_text())
+  if a.format in ("slides","both"):
+   render(data,a.out,a.name,a.theme,a.cta,a.cta_text)
+   print("Saved 5 slides in",a.out)
+  if a.format in ("infographic","both"):
+   path=render_infographic(data,a.out,a.name,a.theme,a.cta,a.cta_text)
+   print("Saved infographic:",path)
 if __name__=="__main__":main()
