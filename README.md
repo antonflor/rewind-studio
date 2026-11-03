@@ -22,8 +22,27 @@ This produces **five 1080 × 1350 PNGs** in `output/`. They are generated progra
 
 ## Generate slides from your own Plex backup
 
+**The Plex database path is different on every installation.** The `--db` option accepts the path to any standalone, consistent Plex library database backup; the filename does not need a particular date suffix. Rewind Studio does **not** assume an Odyssey-specific directory.
+
+Typical Plex data locations include:
+
+- Linux package: `/var/lib/plexmediaserver/Library/Application Support/Plex Media Server/Plug-in Support/Databases/`
+- Docker: the host directory mapped to the container's Plex `/config` volume, often under `Library/Application Support/Plex Media Server/Plug-in Support/Databases/`
+- macOS: `~/Library/Application Support/Plex Media Server/Plug-in Support/Databases/`
+- Windows: `%LOCALAPPDATA%\\Plex Media Server\\Plug-in Support\\Databases\\`
+- Hosted seedboxes and NAS devices: provider-specific or user-configured paths.
+
+On Linux, find the **backup** (not the active live file) with a suitably scoped search, such as:
+
 ```bash
-python rewind.py extract --db "/path/to/com.plexapp.plugins.library.db-2026-11-03" --year 2026 --out stats.json
+find "$HOME" /var/lib/plexmediaserver -type f -name 'com.plexapp.plugins.library.db-20*' 2>/dev/null
+```
+
+Select an appropriate completed backup, supply its full path, then run:
+
+
+```bash
+python rewind.py extract --db "/absolute/path/to/YOUR-OWN-plex-database-backup" --year 2026 --out stats.json
 python rewind.py render --data stats.json --name "My Plex Server" --theme odyssey --cta none --out output
 ```
 
