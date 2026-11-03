@@ -41,6 +41,12 @@ python rewind.py render --data stats.json --name "The Vault" --format both --out
 
 All exports are 1080 × 1350 PNGs. Donations are optional using `--cta none|thanks|donation`.
 
+### Single-page infographic preview
+
+![Example Odyssey 2026 single-page infographic](docs/images/odyssey-infographic-preview.svg)
+
+*SVG recreation of the generated infographic using the real Odyssey sample statistics. It illustrates the current infographic layout; the command below produces a full-resolution PNG.*
+
 ### Single-page infographic (new)
 
 Create one **1080 × 1350 PNG** containing the year's leading metrics, top TV shows and movies, library totals, and an optional closing message:
