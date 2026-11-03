@@ -1,0 +1,22 @@
+{
+  "name": "Aurora",
+  "extends": "odyssey",
+  "colors": {
+    "bg": "#10142d",
+    "panel": "#1c2640",
+    "accent": "#ffba8c",
+    "secondary": "#9bd6f5",
+    "fg": "#ffffff"
+  },
+  "labels": {
+    "cover_title": "YOUR REWIND",
+    "cover_subtitle": "A YEAR OF STORIES",
+    "cover_footer": "Made for movie nights.",
+    "stats_title": "YOUR YEAR IN NUMBERS",
+    "titles_title": "FAN FAVORITES",
+    "library_title": "THE COLLECTION",
+    "closing_title": "THAT'S A WRAP",
+    "closing_subtitle": "SEE YOU NEXT YEAR",
+    "closing_footer": "YOUR SERVER. YOUR STORY."
+  }
+}
