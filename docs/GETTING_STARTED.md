@@ -127,7 +127,33 @@ Both formats support names other than Odyssey and the custom JSON templates in `
 
 ## 9. Post to Instagram
 
-Upload the five generated PNGs as a carousel, preserving their order, **or** upload the standalone `infographic.png` as one feed post. Instagram Stories and Reels are taller than these PNGs; this version **does not yet create an MP4**. To create a video manually, import PNGs into an editor, animate the movement/transitions, and export a vertical 1080 × 1920 MP4.
+Upload the five generated PNGs as a carousel, preserving their order, **or** upload the standalone `infographic.png` as one feed post, **or** the `rewind.mp4` from a designed style (step 10) as a video post. Everything is 1080 × 1350 (4:5), Instagram's portrait feed size. When posting the video, choose a cover frame in Instagram's *Edit cover* step: the video opens on a dark frame.
+
+## 10. Designed styles and video (optional)
+
+The designed styles render in headless Chromium and need two extra installs:
+
+```bash
+python -m pip install -r requirements-studio.txt
+python -m playwright install chromium
+```
+
+On Linux servers without a desktop, use `python -m playwright install --with-deps chromium` instead. If you already have Chrome or Chromium installed, you can skip the download and point Rewind Studio at it: set `REWIND_CHROMIUM` to the browser's executable path.
+
+```bash
+python rewind.py styles
+python rewind.py render --data stats.json --name "The Vault" --style broadsheet --cta thanks --format both --out output/broadsheet
+```
+
+For video, install [ffmpeg](https://ffmpeg.org/download.html) (`winget install ffmpeg`, `brew install ffmpeg`, or `sudo apt install ffmpeg`), then:
+
+```bash
+python rewind.py render --data stats.json --name "The Vault" --style editorial --format video --out output/video
+```
+
+Rendering takes about 30 seconds and writes `output/video/rewind.mp4`. Add `--no-sound` for a silent video. `--theme` recolors any style; `--cta` and `--cta-text` work as for the classic slides.
+
+Statistics extracted with this version also include a monthly breakdown, so designed styles can name the busiest month. Older `stats.json` files still work; that line is just left out.
 
 ## Common problems
 

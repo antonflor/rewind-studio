@@ -1,0 +1,6 @@
+{
+  "name": "VHS",
+  "description": "Rental-tape label: black shell, stripe band, wide italic caps, tape-counter numerals. Leans into the 'rewind' pun.",
+  "fonts": ["Archivo", "Space Mono"],
+  "palette": { "bg": "#121216", "panel": "#ece6d8", "accent": "#f26b1d", "secondary": "#a7a294", "fg": "#f5f1e8" }
+}

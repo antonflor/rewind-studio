@@ -1,0 +1,14 @@
+/* Bundled typefaces for the studio engine. All are SIL Open Font License 1.1 (see each folder's OFL.txt),
+   latin subset, loaded locally so renders never need the network. */
+@font-face { font-family: "Archivo"; src: url("archivo/archivo-latin-standard-normal.woff2") format("woff2"); font-weight: 100 900; font-stretch: 62% 125%; font-style: normal; }
+@font-face { font-family: "Archivo"; src: url("archivo/archivo-latin-standard-italic.woff2") format("woff2"); font-weight: 100 900; font-stretch: 62% 125%; font-style: italic; }
+@font-face { font-family: "JetBrains Mono"; src: url("jetbrains-mono/jetbrains-mono-latin-400-normal.woff2") format("woff2"); font-weight: 400; }
+@font-face { font-family: "JetBrains Mono"; src: url("jetbrains-mono/jetbrains-mono-latin-500-normal.woff2") format("woff2"); font-weight: 500; }
+@font-face { font-family: "JetBrains Mono"; src: url("jetbrains-mono/jetbrains-mono-latin-700-normal.woff2") format("woff2"); font-weight: 700; }
+@font-face { font-family: "Bebas Neue"; src: url("bebas-neue/bebas-neue-latin-400-normal.woff2") format("woff2"); font-weight: 400; }
+@font-face { font-family: "Space Mono"; src: url("space-mono/space-mono-latin-400-normal.woff2") format("woff2"); font-weight: 400; }
+@font-face { font-family: "Space Mono"; src: url("space-mono/space-mono-latin-700-normal.woff2") format("woff2"); font-weight: 700; }
+@font-face { font-family: "Fraunces"; src: url("fraunces/fraunces-latin-standard-normal.woff2") format("woff2"); font-weight: 100 900; font-style: normal; }
+@font-face { font-family: "Fraunces"; src: url("fraunces/fraunces-latin-standard-italic.woff2") format("woff2"); font-weight: 100 900; font-style: italic; }
+@font-face { font-family: "Inter Tight"; src: url("inter-tight/inter-tight-latin-wght-normal.woff2") format("woff2"); font-weight: 100 900; }
+@font-face { font-family: "VT323"; src: url("vt323/vt323-latin-400-normal.woff2") format("woff2"); font-weight: 400; }

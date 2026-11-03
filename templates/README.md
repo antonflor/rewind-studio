@@ -20,4 +20,6 @@ Copy `templates/aurora.json` to create your own. Supported keys:
 
 Export size is 1080 × 1350 pixels (4:5); set your source image to that aspect ratio for best results.
 
+Templates also work with the designed styles: `--style swiss --theme aurora` uses the template's five colors (and labels) on top of the style's layout.
+
 Privacy: Keep user data and licensed posters out of the public template directory. Templates should contain reusable design settings, not real account identifiers.

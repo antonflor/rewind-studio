@@ -21,3 +21,32 @@ jobs:
         run: python rewind.py render --data examples/odyssey-2026.json --name "Sample Server" --theme aurora --cta donation --format infographic --out output/infographic
       - name: Verify outputs
         run: test "$(find output/smoke -name 'slide-*.png' | wc -l)" -eq 5 && test -s output/infographic/infographic.png
+
+  studio:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install studio dependencies
+        run: |
+          python -m pip install -r requirements-studio.txt
+          python -m playwright install --with-deps chromium
+          sudo apt-get update && sudo apt-get install -y ffmpeg
+      - name: Run unit tests (including style renders)
+        run: python -m unittest discover -s tests -v
+      - name: Render every style
+        run: |
+          for style in $(python rewind.py styles | cut -d' ' -f1); do
+            python rewind.py render --data examples/odyssey-2026.json --name "Sample Server" --style "$style" --cta donation --format both --out "output/styles/$style"
+            test "$(find "output/styles/$style" -name '*.png' | wc -l)" -eq 6
+          done
+      - name: Render a video
+        run: |
+          python rewind.py render --data examples/odyssey-2026.json --name "Sample Server" --style editorial --format video --out output/video
+          test -s output/video/rewind.mp4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: studio-renders
+          path: output/

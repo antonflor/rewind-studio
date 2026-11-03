@@ -16,7 +16,8 @@
   "added": {
     "1": 176,
     "2": 36,
-    "4": 1089
+    "4": 1089,
+    "3": 82
   },
   "top_movies": [
     {
@@ -46,5 +47,10 @@
       "plays": 510
     }
   ],
-  "library_size_label": "~10 TiB"
+  "library_size_label": "~10 TiB",
+  "busiest_month": {
+    "month": 5,
+    "plays": 880,
+    "hours": 641.6
+  }
 }

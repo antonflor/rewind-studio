@@ -60,6 +60,8 @@ class RewindTests(unittest.TestCase):
             self.assertEqual(data["hours"], 1)
             self.assertEqual(data["tib"], 1)
             self.assertEqual(data["library"]["1"], 1)
+            self.assertEqual(data["monthly"], [{"month": 5, "plays": 1, "hours": 1.0}])
+            self.assertEqual(data["busiest_month"]["month"], 5)
 
 
 if __name__ == "__main__":

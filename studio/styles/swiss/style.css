@@ -1,0 +1,143 @@
+/* Swiss — International Typographic Style. Off-white paper, Inter Tight from 16px to poster scale,
+   flush-left on a strict grid, a heavy black rule at the top, one red. Numbers do the shouting. */
+.style-swiss {
+  --hair: color-mix(in srgb, var(--fg) 18%, var(--bg));
+  --grey: color-mix(in srgb, var(--fg) 35%, var(--bg));
+  --sans: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
+}
+.style-swiss .slide { padding: 64px 64px 64px; font-family: var(--sans); }
+.style-swiss .deco { display: block; position: absolute; left: 64px; right: 64px; top: 64px; height: 14px; background: var(--fg); }
+
+.style-swiss .slate { margin-top: 30px; display: grid; grid-template-columns: 1fr auto; font-size: 20px; font-weight: 600; line-height: 1.25; }
+.style-swiss .slate-name { display: flex; flex-direction: column; }
+.style-swiss .slate-name b { font-weight: 800; }
+.style-swiss .slate-sep { display: none; }
+.style-swiss .slate-name > span:last-child { color: var(--muted); }
+.style-swiss .slate-no { font-weight: 800; font-size: 20px; }
+
+.style-swiss .l, .style-swiss .range, .style-swiss .progress-head, .style-swiss .p { font-size: 20px; font-weight: 600; line-height: 1.3; color: var(--fg); }
+.style-swiss .footnote, .style-swiss .n, .style-swiss .extra { font-size: 18px; line-height: 1.4; color: var(--muted); font-weight: 500; }
+.style-swiss .title { font-size: 120px; line-height: .9; font-weight: 800; letter-spacing: -.05em; }
+.style-swiss h2.title { margin-top: 64px; }
+.style-swiss .range { margin-top: 18px; color: var(--muted); }
+.style-swiss .lede, .style-swiss .note, .style-swiss .message, .style-swiss .callout { font-size: 34px; line-height: 1.22; font-weight: 600; letter-spacing: -.015em; }
+.style-swiss .v, .style-swiss .year, .style-swiss .thanks, .style-swiss .pl { font-weight: 800; letter-spacing: -.055em; line-height: .8; }
+.style-swiss .bar { background: var(--panel); }
+.style-swiss .bar > i { background: var(--fg); }
+.style-swiss .lead .bar > i, .style-swiss .share .bar > i { background: var(--accent); }
+
+/* cover: the year bleeds off the page */
+.style-swiss .cover-head { margin-top: 70px; position: relative; }
+.style-swiss .s-cover .title { font-size: 120px; }
+.style-swiss .s-cover .year { font-size: 450px; margin: 24px 0 0 -24px; color: var(--accent); white-space: nowrap; }
+.style-swiss .s-cover .lede { margin-top: 30px; max-width: 640px; }
+.style-swiss .progress { margin-top: auto; display: flex; flex-direction: column; gap: 10px; }
+.style-swiss .progress-head { display: flex; justify-content: space-between; }
+.style-swiss .progress-head em { color: var(--accent); }
+.style-swiss .track { height: 34px; background: var(--panel); }
+.style-swiss .track .fill > i { background: var(--fg); }
+.style-swiss .tick { width: 2px; background: var(--bg); }
+.style-swiss .busy-mark { display: none; }
+.style-swiss .month-row { height: 22px; font-size: 16px; font-weight: 700; }
+.style-swiss .month.busy { color: var(--accent); }
+.style-swiss .kpis { margin-top: 36px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; border-top: 4px solid var(--fg); padding-top: 16px; }
+.style-swiss .kpi { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 12px; }
+.style-swiss .kpi .v { font-size: 90px; }
+.style-swiss .foot { display: none; }
+
+/* numbers */
+.style-swiss .s-numbers .hero { margin-top: 56px; display: grid; grid-template-columns: 1fr; }
+.style-swiss .hero .v { font-size: 360px; margin-left: -22px; color: var(--accent); }
+.style-swiss .s-numbers .hero .l { order: -1; margin-bottom: 18px; }
+.style-swiss .hero .note { margin-top: 60px; max-width: 760px; }
+.style-swiss .stats { margin-top: 52px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; border-top: 4px solid var(--fg); padding-top: 16px; }
+.style-swiss .stat { display: flex; flex-direction: column; gap: 10px; }
+.style-swiss .stat .l { order: -1; }
+.style-swiss .stat .v { font-size: 88px; }
+.style-swiss .unit { font-size: .38em; letter-spacing: -.02em; margin-left: .1em; }
+.style-swiss .busiest { margin-top: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 4px solid var(--fg); padding-top: 16px; }
+.style-swiss .busiest-name, .style-swiss .busiest-detail { display: flex; flex-direction: column; gap: 12px; }
+.style-swiss .busiest .v { font-size: 104px; }
+.style-swiss .busiest .d { font-size: 34px; font-weight: 700; letter-spacing: -.02em; }
+.style-swiss .busiest-detail { padding-top: 32px; }
+.style-swiss .s-numbers .monthly { display: none; }
+
+/* watched */
+.style-swiss .s-watched .title { font-size: 104px; }
+.style-swiss .s-watched .list { margin-top: 36px; display: flex; flex-direction: column; border-top: 4px solid var(--fg); padding-top: 14px; }
+.style-swiss .list > .l { padding-bottom: 6px; }
+.style-swiss .row { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; column-gap: 16px; row-gap: 10px; align-items: baseline; padding: 11px 0; border-bottom: 1px solid var(--hair); }
+.style-swiss .rk { font-size: 24px; font-weight: 700; color: var(--muted); }
+.style-swiss .nm { font-size: 40px; font-weight: 700; letter-spacing: -.025em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.style-swiss .pl { font-size: 54px; letter-spacing: -.04em; line-height: .9; }
+.style-swiss .lead .pl { color: var(--accent); }
+.style-swiss .row .bar { grid-column: 2 / 4; height: 10px; }
+.style-swiss .callout { margin-top: auto; }
+.style-swiss .callout b { color: var(--accent); }
+.style-swiss .s-watched .footnote { margin-top: 12px; }
+
+/* library */
+.style-swiss .s-library .lede { margin-top: 20px; }
+.style-swiss .lede b { color: var(--accent); }
+.style-swiss .s-library .counts { margin-top: 52px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 34px 24px; }
+.style-swiss .count-item { display: flex; flex-direction: column; gap: 12px; border-top: 4px solid var(--fg); padding-top: 14px; }
+.style-swiss .count-item .l { order: -1; }
+.style-swiss .s-library .count-item .v { font-size: 120px; }
+.style-swiss .s-library .added { margin-top: auto; display: flex; flex-direction: column; gap: 18px; }
+.style-swiss .s-library .added > .l { color: var(--accent); }
+.style-swiss .share { display: grid; grid-template-columns: minmax(0, 1fr) auto; row-gap: 8px; align-items: baseline; }
+.style-swiss .share .k { font-size: 32px; font-weight: 700; letter-spacing: -.02em; }
+.style-swiss .share .k > span { color: var(--muted); font-weight: 500; }
+.style-swiss .share .p { font-weight: 800; }
+.style-swiss .share .bar { grid-column: 1 / 3; height: 22px; }
+
+/* closing */
+.style-swiss .closing-head { margin-top: 90px; }
+.style-swiss .thanks { font-size: 300px; letter-spacing: -.065em; line-height: .78; }
+.style-swiss .thanks .t1, .style-swiss .thanks .t2 { display: block; margin-left: -14px; }
+.style-swiss .thanks .t2 { color: var(--accent); }
+.style-swiss .message { margin-top: 56px; max-width: 760px; }
+.style-swiss .cta { margin-top: auto; border-top: 4px solid var(--fg); padding-top: 16px; display: flex; flex-direction: column; gap: 14px; }
+.style-swiss .methods { display: flex; flex-direction: column; font-size: 64px; font-weight: 800; letter-spacing: -.045em; line-height: 1; }
+.style-swiss .s-closing .footnote { margin-top: 18px; }
+.style-swiss .s-closing .closing-head + .footnote { margin-top: auto; }
+
+/* infographic */
+.style-swiss .s-info { padding: 56px; }
+.style-swiss .s-info .deco { left: 56px; right: 56px; top: 56px; height: 12px; }
+.style-swiss .s-info .slate { margin-top: 24px; font-size: 17px; }
+.style-swiss .s-info .slate-no { font-size: 17px; }
+.style-swiss .s-info .title { margin-top: 26px; font-size: 78px; letter-spacing: -.045em; }
+.style-swiss .i-top { margin-top: 26px; display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: end; border-top: 4px solid var(--fg); padding-top: 12px; }
+.style-swiss .s-info .hero { display: flex; flex-direction: column-reverse; gap: 12px; }
+.style-swiss .s-info .hero .v { font-size: 200px; margin-left: -10px; }
+.style-swiss .s-info .l { font-size: 16px; }
+.style-swiss .side-row { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; border-bottom: 1px solid var(--hair); }
+.style-swiss .side-row:last-child { border-bottom: 0; }
+.style-swiss .side-row .v { font-size: 58px; }
+.style-swiss .s-info .progress { margin-top: 22px; gap: 6px; }
+.style-swiss .s-info .progress-head { font-size: 15px; }
+.style-swiss .s-info .track { height: 16px; }
+.style-swiss .s-info .track .fill > i { background: var(--grey); }
+.style-swiss .s-info .busy-mark { display: block; background: var(--accent); }
+.style-swiss .s-info .month-row { font-size: 13px; height: 16px; }
+.style-swiss .i-lists, .style-swiss .i-library { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+.style-swiss .s-info .list { border-top: 4px solid var(--fg); padding-top: 10px; }
+.style-swiss .s-info .row { grid-template-columns: 22px minmax(0, 1fr) auto; column-gap: 8px; row-gap: 6px; padding: 8px 0; }
+.style-swiss .s-info .rk { font-size: 15px; }
+.style-swiss .s-info .nm { font-size: 22px; }
+.style-swiss .s-info .pl { font-size: 28px; }
+.style-swiss .s-info .row .bar { height: 5px; }
+.style-swiss .i-counts, .style-swiss .s-info .added { border-top: 4px solid var(--fg); padding-top: 10px; display: flex; flex-direction: column; gap: 10px; }
+.style-swiss .s-info .counts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; }
+.style-swiss .s-info .count-item { border: 0; padding: 0; gap: 4px; }
+.style-swiss .s-info .count-item .l { font-size: 13px; }
+.style-swiss .s-info .count-item .v { font-size: 50px; }
+.style-swiss .s-info .share .k { font-size: 20px; }
+.style-swiss .s-info .share .p { font-size: 14px; }
+.style-swiss .s-info .share .bar { height: 9px; }
+.style-swiss .i-foot { margin-top: auto; border-top: 4px solid var(--fg); padding-top: 12px; display: flex; justify-content: space-between; align-items: baseline; gap: 20px; }
+.style-swiss .i-thanks { font-size: 28px; font-weight: 800; letter-spacing: -.03em; }
+.style-swiss .i-methods { font-size: 16px; font-weight: 700; white-space: nowrap; color: var(--accent); }
+.style-swiss .i-methods .method + .method::before { content: " / "; color: var(--muted); }
+.style-swiss .s-info .footnote { margin-top: 6px; font-size: 14px; }

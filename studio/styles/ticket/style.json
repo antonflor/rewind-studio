@@ -1,0 +1,6 @@
+{
+  "name": "Ticket",
+  "description": "Admit-one ticket stock: cream card on a dark desk, perforated stub, typewriter details, a red stamp.",
+  "fonts": ["Bebas Neue", "Space Mono"],
+  "palette": { "bg": "#1d3437", "panel": "#f3ead6", "accent": "#c23b26", "secondary": "#6d6352", "fg": "#2a241b" }
+}

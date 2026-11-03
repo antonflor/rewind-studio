@@ -1,0 +1,47 @@
+/* Contract every style builds on. Keep style sheets to layout and look; leave this file alone. */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { background: var(--bg); -webkit-font-smoothing: antialiased; text-rendering: geometricPrecision; }
+h1, h2, h3, p { margin: 0; font: inherit; }
+b, strong { font-weight: inherit; }
+em { font-style: normal; }
+template { display: none !important; }
+
+/* One slide is 1080 x 1350 (4:5). Only the slide being captured is shown. */
+.slide { position: relative; width: 1080px; height: 1350px; overflow: hidden;
+  display: flex; flex-direction: column; background: var(--bg); color: var(--fg); }
+.slide:not(.is-shown) { display: none !important; }
+body.preview .slide { display: flex !important; margin: 0 0 40px; }
+.v, .pl, .rk, .p { font-variant-numeric: tabular-nums; }
+
+/* Bars: width comes from data (--w), growth from the motion runtime (--grow, 1 when still). */
+.bar { display: block; position: relative; }
+.bar > i { display: block; height: 100%; width: calc(var(--w, 0%) * var(--grow, 1)); }
+
+/* Year track: ticks, month letters and the busiest-month mark sit at --l along it. */
+.track { position: relative; }
+.track .fill { position: absolute; inset: 0; background: transparent; }
+.track .fill > i { height: 100%; }
+.tick, .busy-mark { position: absolute; top: 0; bottom: 0; left: var(--l); }
+.busy-mark { width: var(--bw); }
+.month-row { position: relative; }
+.month { position: absolute; left: var(--l); }
+
+/* Monthly bar chart (only when the stats include a monthly breakdown). */
+.monthly { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); align-items: end; }
+.mbar { display: flex; flex-direction: column; justify-content: flex-end; height: 100%; }
+.mbar > i { display: block; height: var(--h, 0%); }
+
+/* Shrink-to-fit: an element with --fit: 1 keeps one line and scales its font down (to 40% at most)
+   until it fits its box. Server names can be any length, so names and the lines built from them use it. */
+@property --fit { syntax: "<number>"; inherits: false; initial-value: 0; }
+.slate { min-width: 0; }
+.slate-name { --fit: 1; display: block; min-width: 0; white-space: nowrap; overflow: hidden; }
+.slate-no { white-space: nowrap; flex-shrink: 0; }
+.s-info .title { --fit: 1; white-space: nowrap; overflow: hidden; }
+.i-foot { min-width: 0; }
+.i-thanks { --fit: 1; min-width: 0; white-space: nowrap; overflow: hidden; }
+.i-methods { flex-shrink: 0; }
+
+/* Decoration slots are off unless a style turns them on. */
+.deco { display: none; }

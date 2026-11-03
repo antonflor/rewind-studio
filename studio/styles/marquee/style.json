@@ -1,0 +1,6 @@
+{
+  "name": "Marquee",
+  "description": "Old movie-palace marquee: bulb-lit frame, tall all-caps letters, centered billing.",
+  "fonts": ["Bebas Neue", "Archivo"],
+  "palette": { "bg": "#170808", "panel": "#2b1110", "accent": "#ffcf6b", "secondary": "#d8aea4", "fg": "#fff3e3" }
+}

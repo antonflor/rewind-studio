@@ -1,0 +1,198 @@
+<!--
+  Shared markup for every studio style. A style is a stylesheet that lays these elements out
+  (see studio/styles/README.md). Bindings, filled by runtime/bind.js from the display model:
+    data-k="path"          text content
+    data-if / data-unless  keep the element only when the value is truthy / falsy
+    data-each="path"       on <template>: one copy per item, items available as "it"
+    data-css="--x:path"    set CSS custom properties (bar widths, positions)
+    data-class="path"      add the value as a class
+    data-count="path"      numeric target for the count-up in videos
+  Motion hooks: data-m marks an element that fades up in document order; .bar > i grows.
+-->
+<main id="deck">
+
+<section class="slide s-cover" data-slide="cover">
+  <div class="deco" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  <header class="slate" data-m>
+    <span class="slate-name"><b data-k="server"></b><span class="slate-sep"> · </span><span data-k="labels.series"></span></span>
+    <span class="slate-no">01 / 05</span>
+  </header>
+  <div class="cover-head">
+    <h1 class="title" data-m data-k="labels.cover_title"></h1>
+    <div class="year" data-m data-k="year"></div>
+    <p class="lede" data-m data-k="labels.cover_subtitle"></p>
+  </div>
+  <div class="progress" data-m>
+    <div class="progress-head">
+      <span class="progress-range"><span data-k="period.start"></span> → <em data-k="period.end"></em></span>
+      <span class="progress-day" data-k="period.day_label"></span>
+    </div>
+    <div class="track">
+      <span class="bar fill" data-css="--w:period.pct"><i></i></span>
+      <template data-each="months"><b class="tick" data-css="--l:it.start_pct"></b></template>
+      <b class="busy-mark" data-if="busiest" data-css="--l:busiest.start_pct;--bw:busiest.width_pct"></b>
+    </div>
+    <div class="month-row"><template data-each="months"><span class="month" data-css="--l:it.start_pct;--mw:it.width_pct" data-class="it.cls" data-k="it.letter"></span></template></div>
+  </div>
+  <div class="kpis" data-m>
+    <div class="kpi"><span class="v" data-k="kpi.plays.fmt" data-count="kpi.plays.v"></span><span class="l">Plays</span></div>
+    <div class="kpi"><span class="v" data-k="kpi.hours.fmt" data-count="kpi.hours.v"></span><span class="l">Hours</span></div>
+    <div class="kpi"><span class="v" data-k="kpi.viewers.fmt" data-count="kpi.viewers.v"></span><span class="l">Viewers</span></div>
+  </div>
+  <footer class="foot" data-if="labels.cover_footer" data-k="labels.cover_footer"></footer>
+</section>
+
+<section class="slide s-numbers" data-slide="numbers">
+  <div class="deco" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  <header class="slate" data-m>
+    <span class="slate-name"><b data-k="server"></b><span class="slate-sep"> · </span><span data-k="labels.series"></span></span>
+    <span class="slate-no">02 / 05</span>
+  </header>
+  <h2 class="title" data-m data-k="labels.stats_title"></h2>
+  <p class="range" data-m data-k="period.range_long"></p>
+  <div class="hero" data-m>
+    <span class="v" data-k="kpi.plays.fmt" data-count="kpi.plays.v" data-big></span>
+    <span class="l">Plays</span>
+    <p class="note" data-k="sentences.plays_per_day"></p>
+  </div>
+  <div class="stats">
+    <div class="stat" data-m><span class="v" data-k="kpi.hours.fmt" data-count="kpi.hours.v"></span><span class="l">Hours streamed</span><span class="n" data-if="derived.hours_per_day">≈ <span data-k="derived.hours_per_day"></span> a day</span></div>
+    <div class="stat" data-m><span class="v" data-k="kpi.viewers.fmt" data-count="kpi.viewers.v"></span><span class="l">Viewers</span><span class="n" data-if="derived.hours_per_viewer">≈ <span data-k="derived.hours_per_viewer"></span> hours each</span></div>
+    <div class="stat" data-m><span class="v"><span data-k="kpi.data.fmt" data-count="kpi.data.v"></span><small class="unit" data-k="kpi.data.unit"></small></span><span class="l">Delivered</span><span class="n" data-if="derived.gib_per_day">≈ <span data-k="derived.gib_per_day"></span> GiB a day</span></div>
+  </div>
+  <div class="busiest" data-if="busiest" data-m>
+    <div class="busiest-name"><span class="l">Busiest month</span><span class="v" data-k="busiest.name"></span></div>
+    <div class="busiest-detail"><span class="d" data-k="busiest.detail"></span><span class="n" data-if="busiest.share"><span data-k="busiest.share"></span>% of the year's plays in one month</span></div>
+  </div>
+  <div class="monthly" data-if="monthly" data-m>
+    <template data-each="months"><span class="mbar" data-class="it.cls" data-css="--h:it.h_pct"><i></i><b data-k="it.letter"></b></span></template>
+  </div>
+</section>
+
+<section class="slide s-watched" data-slide="watched">
+  <div class="deco" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  <header class="slate" data-m>
+    <span class="slate-name"><b data-k="server"></b><span class="slate-sep"> · </span><span data-k="labels.series"></span></span>
+    <span class="slate-no">03 / 05</span>
+  </header>
+  <h2 class="title" data-m data-k="labels.titles_title"></h2>
+  <p class="range" data-m data-k="labels.titles_range"></p>
+  <div class="list shows" data-if="top_shows" data-m>
+    <h3 class="l">Top shows</h3>
+    <template data-each="top_shows">
+      <div class="row" data-class="it.cls"><span class="rk" data-k="it.rank"></span><span class="nm" data-k="it.title"></span><span class="pl" data-k="it.fmt"></span><span class="bar" data-css="--w:it.pct"><i></i></span></div>
+    </template>
+  </div>
+  <div class="list movies" data-if="top_movies" data-m>
+    <h3 class="l">Top movies</h3>
+    <template data-each="top_movies">
+      <div class="row" data-class="it.cls"><span class="rk" data-k="it.rank"></span><span class="nm" data-k="it.title"></span><span class="pl" data-k="it.fmt"></span><span class="bar" data-css="--w:it.pct"><i></i></span></div>
+    </template>
+  </div>
+  <p class="callout" data-if="top3.share" data-m><span data-k="top3.label"></span> alone: <b><span data-k="top3.total_fmt"></span> plays</b>, <span data-k="top3.share"></span>% of everything.</p>
+  <p class="footnote" data-k="notes.plays"></p>
+</section>
+
+<section class="slide s-library" data-slide="library">
+  <div class="deco" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  <header class="slate" data-m>
+    <span class="slate-name"><b data-k="server"></b><span class="slate-sep"> · </span><span data-k="labels.series"></span></span>
+    <span class="slate-no">04 / 05</span>
+  </header>
+  <h2 class="title" data-m data-k="labels.library_title"></h2>
+  <p class="lede" data-m data-if="library.size_label"><b data-k="library.size_label"></b> <span data-k="sentences.library"></span></p>
+  <div class="counts">
+    <template data-each="library.items">
+      <div class="count-item" data-m data-class="it.key"><span class="v" data-k="it.fmt" data-count="it.v"></span><span class="l" data-k="it.label"></span></div>
+    </template>
+  </div>
+  <div class="added" data-if="added" data-m>
+    <h3 class="l">Added in <span data-k="year"></span></h3>
+    <template data-each="added">
+      <div class="share"><span class="k"><b data-k="it.part_fmt"></b> <span>of <span data-k="it.whole_fmt"></span> <span data-k="it.unit"></span></span></span><span class="p"><span data-k="it.pct"></span> new</span><span class="bar" data-css="--w:it.w"><i></i></span></div>
+    </template>
+    <p class="extra" data-if="added_seasons">Also new this year: <span data-k="added_seasons"></span> seasons.</p>
+  </div>
+</section>
+
+<section class="slide s-closing" data-slide="closing">
+  <div class="deco" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  <header class="slate" data-m>
+    <span class="slate-name"><b data-k="server"></b><span class="slate-sep"> · </span><span data-k="labels.series"></span></span>
+    <span class="slate-no">05 / 05</span>
+  </header>
+  <div class="closing-head">
+    <h2 class="thanks" data-m><span class="t1" data-k="cta.title_a"></span> <span class="t2" data-k="cta.title_b"></span></h2>
+    <p class="message" data-m data-k="cta.message"></p>
+  </div>
+  <div class="cta" data-if="cta.methods" data-m>
+    <span class="l" data-k="cta.methods_label"></span>
+    <div class="methods"><template data-each="cta.methods"><span class="method" data-k="it"></span></template></div>
+  </div>
+  <p class="footnote" data-m data-k="cta.footer"></p>
+</section>
+
+<section class="slide s-info" data-slide="infographic">
+  <div class="deco" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  <header class="slate">
+    <span class="slate-name"><b data-k="server"></b><span class="slate-sep"> · </span><span data-k="labels.series"></span></span>
+    <span class="slate-no" data-k="period.range"></span>
+  </header>
+  <h1 class="title" data-k="labels.info_title"></h1>
+  <div class="i-top">
+    <div class="hero"><span class="v" data-k="kpi.plays.fmt"></span><span class="l">Plays<span data-if="derived.plays_per_day"> · ≈ <span data-k="derived.plays_per_day"></span> a day</span></span></div>
+    <div class="side">
+      <div class="side-row"><span class="v" data-k="kpi.hours.fmt"></span><span class="l">Hours streamed</span></div>
+      <div class="side-row"><span class="v" data-k="kpi.viewers.fmt"></span><span class="l">Viewers</span></div>
+      <div class="side-row"><span class="v"><span data-k="kpi.data.fmt"></span><small class="unit" data-k="kpi.data.unit"></small></span><span class="l">Delivered</span></div>
+    </div>
+  </div>
+  <div class="progress">
+    <div class="progress-head">
+      <span class="progress-day" data-k="period.day_label"></span>
+      <span class="progress-busy" data-if="busiest">Busiest month: <em data-k="busiest.name"></em> · <span data-k="busiest.detail"></span></span>
+    </div>
+    <div class="track">
+      <span class="bar fill" data-css="--w:period.pct"><i></i></span>
+      <b class="busy-mark" data-if="busiest" data-css="--l:busiest.start_pct;--bw:busiest.width_pct"></b>
+    </div>
+    <div class="month-row"><template data-each="months"><span class="month" data-css="--l:it.start_pct;--mw:it.width_pct" data-class="it.cls" data-k="it.letter"></span></template></div>
+  </div>
+  <div class="i-lists">
+    <div class="list shows" data-if="top_shows">
+      <h3 class="l">Top shows · plays</h3>
+      <template data-each="top_shows">
+        <div class="row" data-class="it.cls"><span class="rk" data-k="it.rank"></span><span class="nm" data-k="it.title"></span><span class="pl" data-k="it.fmt"></span><span class="bar" data-css="--w:it.pct"><i></i></span></div>
+      </template>
+    </div>
+    <div class="list movies" data-if="top_movies">
+      <h3 class="l">Top movies · plays</h3>
+      <template data-each="top_movies">
+        <div class="row" data-class="it.cls"><span class="rk" data-k="it.rank"></span><span class="nm" data-k="it.title"></span><span class="pl" data-k="it.fmt"></span><span class="bar" data-css="--w:it.pct"><i></i></span></div>
+      </template>
+    </div>
+  </div>
+  <div class="i-library">
+    <div class="i-counts">
+      <h3 class="l"><span data-k="labels.library_title"></span><span data-if="library.size_label"> · <span data-k="library.size_label"></span></span></h3>
+      <div class="counts">
+        <template data-each="library.items">
+          <div class="count-item" data-class="it.key"><span class="v" data-k="it.fmt"></span><span class="l" data-k="it.label"></span></div>
+        </template>
+      </div>
+    </div>
+    <div class="added" data-if="added">
+      <h3 class="l">Added in <span data-k="year"></span></h3>
+      <template data-each="added">
+        <div class="share"><span class="k"><b data-k="it.part_fmt"></b> <span>of <span data-k="it.whole_fmt"></span> <span data-k="it.unit"></span></span></span><span class="p" data-k="it.pct"></span><span class="bar" data-css="--w:it.w"><i></i></span></div>
+      </template>
+    </div>
+  </div>
+  <footer class="i-foot">
+    <span class="i-thanks" data-k="cta.short"></span>
+    <span class="i-methods" data-if="cta.methods"><template data-each="cta.methods_short"><span class="method" data-k="it"></span></template></span>
+  </footer>
+  <p class="footnote"><span data-k="notes.plays"></span><span data-if="cta.methods"> <span data-k="cta.footer"></span></span></p>
+</section>
+
+</main>

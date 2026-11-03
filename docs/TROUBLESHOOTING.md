@@ -16,7 +16,7 @@ You may be pointing at the live Plex DB, a partial backup, or an inaccessible pa
 Verify the input is `com.plexapp.plugins.library.db...` and not `com.plexapp.plugins.library.blobs.db...`. Older or different Plex versions can vary.
 
 ## Fonts look different
-Pillow uses an installed system font. Install DejaVu Sans on Linux or use default Windows/macOS fonts; the result may vary slightly.
+The designed styles bundle their own fonts and look the same everywhere. The classic renderer uses an installed system font. Install DejaVu Sans on Linux or use default Windows/macOS fonts; the result may vary slightly.
 
 ## Template not found
 Run `python rewind.py templates` from the repository root. Use a file path to load templates from another directory.
@@ -25,4 +25,13 @@ Run `python rewind.py templates` from the repository root. Use a file path to lo
 The year-to-date stats only include data retained in the supplied snapshot. Run with a newer backup for later results.
 
 ## Can I export video?
-Not in this MVP. It generates five PNGs; import those into Instagram, CapCut, DaVinci Resolve, or another video editor to animate them.
+Yes, with a designed style: `--style editorial --format video` (see the getting started guide, step 10). It needs `requirements-studio.txt`, a Chromium build and ffmpeg.
+
+## "Could not start Chromium for the studio engine"
+Run `python -m playwright install chromium` (on headless Linux: `python -m playwright install --with-deps chromium`), or set `REWIND_CHROMIUM` to an installed Chrome or Chromium executable.
+
+## "Video export needs ffmpeg on your PATH"
+Install ffmpeg (`winget install ffmpeg`, `brew install ffmpeg`, `sudo apt install ffmpeg`) and open a new terminal so the PATH change takes effect.
+
+## The video has no sound
+numpy is missing. Install the studio requirements: `python -m pip install -r requirements-studio.txt`.

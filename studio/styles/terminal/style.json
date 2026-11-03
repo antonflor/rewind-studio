@@ -1,0 +1,6 @@
+{
+  "name": "Terminal",
+  "description": "Amber-phosphor homelab console: shell prompts, pixel numerals, block-character bars, status line.",
+  "fonts": ["VT323", "JetBrains Mono"],
+  "palette": { "bg": "#0e0b06", "panel": "#1d160a", "accent": "#ffb000", "secondary": "#b98a2c", "fg": "#ffd27a" }
+}
