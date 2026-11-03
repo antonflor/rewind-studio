@@ -1,43 +1,56 @@
 # Rewind Studio
 
-Generate an Instagram-ready annual recap from a **Plex SQLite database backup**. This is a small, local-first MVP focused on collecting statistics and rendering the five Odyssey-style slides—not a web editor or a theme marketplace.
+A small, privacy-first **Plex statistics → Instagram slide generator**. The server can have **any name**; Odyssey is just the included example. This MVP focuses on extracting aggregate statistics and generating the **same five recap slide categories**: title, by the numbers, most played, library, and thank-you/optional donation.
 
-## Quick start
+## Setup
 
-Requires Python 3.10+ and Pillow. FFmpeg is optional for MP4 output.
+Requires Python 3.10+ and Pillow.
 
 ```bash
+git clone https://github.com/antonflor/rewind-studio.git
+cd rewind-studio
 python -m pip install -r requirements.txt
-python rewind.py extract --db "/path/to/com.plexapp.plugins.library.db-2026-11-03" --year 2026 --out stats.json
-python rewind.py render --data stats.json --out output --name Odyssey --theme odyssey --cta donation
 ```
 
-Outputs five 1080×1350 PNG slides in `output/`. If FFmpeg is installed, add `--video` to create an animated, silent 1080×1920 MP4 from the images. Music can be added in Instagram or another editor.
-
-### Customization
+## Preview using the included example
 
 ```bash
-python rewind.py render --data stats.json --out output --name "My Plex Server" --theme minimal --cta none
+python rewind.py render --data examples/odyssey-2026.json --name Odyssey --theme odyssey --cta donation --out output
 ```
 
-Available `--cta`: `none` (default), `thanks`, `donation`. Donation wording is generic: PayPal / Zelle / DM; edit it with `--cta-text`. No personal payment identifier is required.
+This produces **five 1080 × 1350 PNGs** in `output/`. They are generated programmatically in a restrained dashboard style rather than reusing AI images. The graphics will not yet look identical to the previously generated artwork.
 
-### Data accuracy and privacy
+## Generate slides from your own Plex backup
 
-- Work **only from Plex's scheduled database backups** or consistent SQLite snapshots. Never copy a live `.db` without its WAL transaction state or interfere with Plex.
-- The extraction exports **aggregated statistics only**, never account names, account IDs, playback history rows, or private URLs.
-- A playback event is **not** necessarily a completed watch.
-- Playback totals use `metadata_item_views`; streaming durations and traffic use a *single* monthly aggregation level (`timespan=1`) to prevent double counting.
-- `duration` is interpreted as seconds, based on Plex's aggregation behavior. Inspect your Plex version's data if results seem implausible.
-- `du` disk usage is not in the database. Set `library_size_label` manually in the JSON if desired.
-- Statistics describe only what was retained in the chosen backup and only through its snapshot date. Use “so far” unless the year has ended.
-- Plex metadata type 10 is tracks and type 12 represents other music-related metadata; the tool does not use type 12 to count tracks.
+```bash
+python rewind.py extract --db "/path/to/com.plexapp.plugins.library.db-2026-11-03" --year 2026 --out stats.json
+python rewind.py render --data stats.json --name "My Plex Server" --theme odyssey --cta none --out output
+```
 
-### Planned next improvements
+Your name may contain spaces. Other examples: `--name "The Vault"`, `--name "Movie Night"`, or `--name "Home Theater"`. No “Odyssey” branding is hardcoded into the renderer.
 
-- Better scene-by-scene animation instead of still-slide transitions
-- Poster/thumbnail upload and per-slide backgrounds
-- More themes and a visual customization interface
-- Jellyfin and Tautulli adapters
+Themes currently supported: `odyssey` and `minimal`.
 
-Contributions welcome. No Plex affiliation.
+Closing slide modes:
+- `--cta none` (default): general year-end thank you, no donation request
+- `--cta thanks`: thank-you message
+- `--cta donation`: generic donation request with PayPal, Zelle, or DM wording
+- `--cta-text "Your custom message"`: override the message
+
+## Data and privacy
+
+Only use a **complete standalone scheduled Plex DB backup**. Do not use the live database when Plex is writing to it. The importer opens it read-only and exports **aggregates**, not per-account identities or playback history.
+
+- Playback events may include partial watches.
+- Streaming hours are calculated from monthly `statistics_media` duration values interpreted as seconds.
+- Bandwidth is calculated from monthly `statistics_bandwidth` bytes.
+- Monthly `timespan=1` is selected deliberately to avoid double counting different aggregation levels.
+- Library inventory is the snapshot inventory; additions are surviving records with `added_at` in the requested year.
+- The stored snapshot may not cover the full year. The graphic explicitly says “so far.”
+- Disk size is not in the database. Add `"library_size_label": "~10 TiB"` in `stats.json` if you want to display storage.
+
+## MVP boundaries
+
+This revision exports **PNG slides only**, not an animated MP4. Motion rendering, custom poster image slots, additional themes, and a UI are future features. The first priority is a reliable data export and a reproducible slide generator.
+
+Not affiliated with Plex.
