@@ -3,7 +3,7 @@
 import argparse, json, sqlite3
 from pathlib import Path
 from datetime import datetime, timezone
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageColor
 
 SIZE=(1080,1350)
 THEMES={
@@ -47,10 +47,37 @@ def draw_text(d,x,y,s,color,size=36,bold=False,width=930):
  s=str(s)
  while size>16 and d.textbbox((0,0),s,font=face(size,bold))[2]>width:size-=2
  d.text((x,y),s,font=face(size,bold),fill=color)
+def load_template(spec):
+ """Load trusted local JSON data, not executable Python theme plugins."""
+ if spec in THEMES:
+  return dict(THEMES[spec]), {}, None
+ path=Path(spec).expanduser()
+ if not path.is_file():
+  path=Path("templates") / (spec if spec.endswith(".json") else spec+".json")
+ if not path.is_file():raise SystemExit(f"Template not found: {spec}. Run 'python rewind.py templates' to list choices.")
+ obj=json.loads(path.read_text(encoding="utf-8"))
+ base=THEMES.get(obj.get("extends","odyssey"))
+ if base is None:raise SystemExit("Unknown base theme")
+ colors=dict(base)
+ for k,v in obj.get("colors",{}).items():
+  if k not in colors:raise SystemExit(f"Unknown template color: {k}")
+  try:ImageColor.getrgb(v)
+  except ValueError:raise SystemExit(f"Invalid color: {v}")
+  colors[k]=v
+ return colors,obj.get("labels",{}),path.parent / obj["background"] if obj.get("background") else None
+
 def render(data,out,name,theme,cta,cta_text):
- p=THEMES[theme];out=Path(out);out.mkdir(parents=True,exist_ok=True)
+ p,labels,bg_path=load_template(theme)
+ out=Path(out);out.mkdir(parents=True,exist_ok=True)
+ def label(k,default):return labels.get(k,default)
  def blank():
-  img=Image.new("RGB",SIZE,p["bg"]);d=ImageDraw.Draw(img)
+  img=Image.new("RGB",SIZE,p["bg"])
+  if bg_path:
+   if not bg_path.is_file():raise SystemExit(f"Template background does not exist: {bg_path}")
+   with Image.open(bg_path) as source:
+    from PIL import ImageOps
+    img=Image.blend(img,ImageOps.fit(source.convert("RGB"),SIZE),0.25)
+  d=ImageDraw.Draw(img)
   for x in range(0,1080,80):d.line((x,0,x,1350),fill="#203039",width=1)
   for y in range(0,1350,80):d.line((0,y,1080,y),fill="#203039",width=1)
   d.rectangle((0,0,1080,13),fill=p["accent"])
@@ -68,18 +95,18 @@ def render(data,out,name,theme,cta,cta_text):
   im,d=blank();fn(d);im.save(out/f"slide-{n}.png")
  def cover(d):
   draw_text(d,60,85,name.upper(),p["secondary"],38,True)
-  draw_text(d,60,365,"REWIND",p["fg"],122,True)
+  draw_text(d,60,365,label("cover_title","REWIND"),p["fg"],122,True)
   draw_text(d,60,515,str(data["year"]),p["accent"],165,True)
-  draw_text(d,60,800,"YOUR YEAR IN STREAMING",p["secondary"],36,True)
-  draw_text(d,60,1155,"A year powered by the community.",p["fg"],30)
+  draw_text(d,60,800,label("cover_subtitle","YOUR YEAR IN STREAMING"),p["secondary"],36,True)
+  draw_text(d,60,1155,label("cover_footer","A year powered by the community."),p["fg"],30)
  page(1,cover)
  def stats(d):
-  heading(d,"BY THE NUMBERS")
+  heading(d,label("stats_title","BY THE NUMBERS"))
   for i,(label,value) in enumerate([("Viewer accounts",f'{data["viewers"]:,}'),("Playback events",f'{data["plays"]:,}'),("Estimated streaming hours",f'{data["hours"]:,.0f}'),("Plex media traffic",f'{data["tib"]:.2f} TiB')]):card(d,342+i*189,label,value)
   draw_text(d,60,1190,"Playbacks are not necessarily completed watches.",p["secondary"],22)
  page(2,stats)
  def shows(d):
-  heading(d,"MOST PLAYED")
+  heading(d,label("titles_title","MOST PLAYED"))
   for title,y,key in [("TV SHOWS",346,"top_shows"),("MOVIES",792,"top_movies")]:
    draw_text(d,60,y,title,p["accent"],34,True)
    for i,item in enumerate(data[key]):
@@ -90,7 +117,7 @@ def render(data,out,name,theme,cta,cta_text):
   draw_text(d,60,1240,"Ranked by play events, not completed watches.",p["secondary"],21)
  page(3,shows)
  def library(d):
-  heading(d,"THE LIBRARY")
+  heading(d,label("library_title","THE LIBRARY"))
   for i,(label,t) in enumerate([("Movies",1),("TV series",2),("TV episodes",4),("Music tracks",10)]):card(d,320+i*173,label,f'{data["library"].get(str(t),0):,}')
   if data.get("library_size_label"):draw_text(d,60,1040,data["library_size_label"]+" OF MEDIA",p["accent"],42,True)
   draw_text(d,60,1130,"ADDED THIS YEAR",p["secondary"],28,True)
@@ -98,8 +125,8 @@ def render(data,out,name,theme,cta,cta_text):
  page(4,library)
  def ending(d):
   draw_text(d,60,85,name.upper(),p["secondary"],34,True)
-  draw_text(d,60,345,"THANK YOU",p["accent"],106,True)
-  draw_text(d,60,520,"FOR WATCHING",p["fg"],71,True)
+  draw_text(d,60,345,label("closing_title","THANK YOU"),p["accent"],106,True)
+  draw_text(d,60,520,label("closing_subtitle","FOR WATCHING"),p["fg"],71,True)
   if cta=="donation":
    msg=cta_text or "Thanks for your support. Help keep it going next year!"
    foot="PayPal, Zelle, or DM for details"
@@ -111,15 +138,20 @@ def render(data,out,name,theme,cta,cta_text):
    foot="See you next year."
   draw_text(d,60,805,msg,p["fg"],34,False)
   draw_text(d,60,950,foot,p["secondary"],32)
-  draw_text(d,60,1210,"POWERED BY THE COMMUNITY",p["accent"],26,True)
+  draw_text(d,60,1210,label("closing_footer","POWERED BY THE COMMUNITY"),p["accent"],26,True)
  page(5,ending)
 
 def main():
  ap=argparse.ArgumentParser(description="Local Plex Rewind PNG slide generator")
  sub=ap.add_subparsers(dest="command",required=True)
  x=sub.add_parser("extract");x.add_argument("--db",required=True);x.add_argument("--year",type=int,required=True);x.add_argument("--out",default="stats.json")
- r=sub.add_parser("render");r.add_argument("--data",required=True);r.add_argument("--out",default="output");r.add_argument("--name",default="My Media Server");r.add_argument("--theme",choices=THEMES,default="odyssey");r.add_argument("--cta",choices=["none","thanks","donation"],default="none");r.add_argument("--cta-text")
+ r=sub.add_parser("render");r.add_argument("--data",required=True);r.add_argument("--out",default="output");r.add_argument("--name",default="My Media Server");r.add_argument("--theme",default="odyssey",help="Built-in theme, template name, or path to a template JSON");r.add_argument("--cta",choices=["none","thanks","donation"],default="none");r.add_argument("--cta-text")
+ sub.add_parser("templates",help="List built-in and local template files")
  a=ap.parse_args()
+ if a.command=="templates":
+  print("Built-in: "+", ".join(THEMES))
+  for f in sorted(Path("templates").glob("*.json")):print("Custom:",f)
+  return
  if a.command=="extract":
   data=extract(a.db,a.year);Path(a.out).write_text(json.dumps(data,indent=2));print("Saved",a.out)
  else:
