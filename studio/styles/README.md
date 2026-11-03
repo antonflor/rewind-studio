@@ -23,7 +23,7 @@ Python.
 }
 ```
 
-The palette keys match the classic `templates/*.json` colors, so `--theme aurora` recolors any style.
+The palette keys match the `templates/*.json` colors, so `--theme aurora` recolors any style.
 In CSS they arrive as `--bg`, `--panel`, `--accent`, `--muted` (from `secondary`) and `--fg`. Derive
 anything else with `color-mix()` so a theme override still holds together.
 

@@ -1,6 +1,8 @@
-"""Smoke tests for template loading, extraction and rendering. Run: python -m unittest discover -s tests"""
+"""Smoke tests for templates, the CLI and the read-only extractor. Run: python -m unittest discover -s tests"""
 import json
 import sqlite3
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -10,27 +12,25 @@ import rewind
 
 class RewindTests(unittest.TestCase):
     def test_template_loading(self):
-        for name in ("odyssey", "minimal", "aurora", "forest"):
-            colors, labels, background = rewind.load_template(name)
+        for name in ("aurora", "forest"):
+            colors, labels = rewind.load_template(name)
             self.assertIn("accent", colors)
-            self.assertIn("bg", colors)
+            self.assertIn("cover_title", labels)
 
-    def test_render_five_pngs_without_donation(self):
-        example = json.loads(Path("examples/odyssey-2026.json").read_text())
+    def test_template_rejects_bad_colors(self):
         with tempfile.TemporaryDirectory() as tmp:
-            rewind.render(example, tmp, "Not Odyssey", "aurora", "none", None)
-            self.assertEqual(len(list(Path(tmp).glob("slide-*.png"))), 5)
-            for png in Path(tmp).glob("slide-*.png"):
-                self.assertGreater(png.stat().st_size, 1000)
+            bad = Path(tmp) / "bad.json"
+            bad.write_text(json.dumps({"colors": {"bg": "url(x)"}}))
+            with self.assertRaises(SystemExit):
+                rewind.load_template(str(bad))
+            bad.write_text(json.dumps({"colors": {"glow": "#ffffff"}}))
+            with self.assertRaises(SystemExit):
+                rewind.load_template(str(bad))
 
-    def test_single_page_infographic(self):
-        example = json.loads(Path("examples/odyssey-2026.json").read_text())
-        with tempfile.TemporaryDirectory() as tmp:
-            img = rewind.render_infographic(example, tmp, "Odyssey", "odyssey", "donation", None)
-            self.assertTrue(img.exists())
-            from PIL import Image
-            with Image.open(img) as im:
-                self.assertEqual(im.size, (1080, 1350))
+    def test_styles_command_lists_every_style(self):
+        out = subprocess.run([sys.executable, "rewind.py", "styles"], capture_output=True, text=True, check=True).stdout
+        for style in ("editorial", "marquee", "ticket", "broadsheet", "terminal", "swiss", "vhs"):
+            self.assertIn(style, out)
 
     def test_read_only_extract(self):
         with tempfile.TemporaryDirectory() as tmp:

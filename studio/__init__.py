@@ -1,1 +1,1 @@
-"""Rewind Studio's HTML engine: designed styles, rendered locally in headless Chromium."""
+"""Rewind Studio's renderer: designed styles, rendered locally in headless Chromium."""

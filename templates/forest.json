@@ -1,6 +1,5 @@
 {
   "name": "Forest",
-  "extends": "minimal",
   "colors": {
     "bg": "#0e211a",
     "panel": "#1a362a",
@@ -9,9 +8,8 @@
     "fg": "#f6f7ef"
   },
   "labels": {
-    "cover_title": "YEAR IN REVIEW",
-    "cover_subtitle": "MOVIES. SHOWS. MEMORIES.",
-    "closing_title": "THANK YOU",
-    "closing_subtitle": "FOR BEING HERE"
+    "cover_title": "Year in Review",
+    "cover_subtitle": "Movies, shows and memories.",
+    "closing_title": "Thank you."
   }
 }

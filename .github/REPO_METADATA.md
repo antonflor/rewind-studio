@@ -4,7 +4,7 @@ Use these values in the repository's **About** panel (top-right of the repositor
 
 **Description (suggested):**
 
-> Open-source Plex Year in Review generator. Turn playback statistics into Instagram slides, a single-page infographic or an animated MP4, in seven designed styles or your own theme.
+> A Plex year in review for any server: Instagram slides, a single-page infographic or an animated video, in seven designed styles. Local-first, no Plex token.
 
 **Website:** leave blank until there is a hosted demo or project landing page.
 
@@ -17,7 +17,7 @@ Use these values in the repository's **About** panel (top-right of the repositor
 - Five-image carousel, single-page infographic, or an animated MP4 with sound
 - Seven designed styles: editorial, marquee, ticket, broadsheet, terminal, swiss, vhs
 - Any Plex server name
-- Custom JSON themes in `templates/`
+- Color and label templates in `templates/`; new styles are one stylesheet each
 - Safe, local aggregate analysis of a standalone Plex database backup
 - Optional donation / thank-you closing message
 - No hosted service or required Plex API token

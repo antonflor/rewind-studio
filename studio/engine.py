@@ -1,7 +1,7 @@
-"""Studio engine: render the shared markup with a style sheet in headless Chromium.
+"""Render the shared markup with a style sheet in headless Chromium.
 
-Optional dependencies (requirements-studio.txt): playwright (+ a Chromium build) for every
-studio export, numpy for video sound, and ffmpeg on PATH for video.
+Needs playwright (+ a Chromium build, or REWIND_CHROMIUM) for every export, numpy for video sound
+and ffmpeg on PATH for video.
 """
 import json
 import os
@@ -74,7 +74,7 @@ def _browser(pw):
             return pw.chromium.launch(args=args, **kw)
         except Exception as err:  # pragma: no cover - depends on the machine
             last = err
-    raise StudioError("Could not start Chromium for the studio engine. Run 'python -m playwright install chromium' "
+    raise StudioError("Could not start Chromium. Run 'python -m playwright install chromium' "
                       f"or set REWIND_CHROMIUM to a Chrome/Chromium binary. ({last})")
 
 
@@ -85,7 +85,7 @@ class Session:
         try:
             from playwright.sync_api import sync_playwright
         except ImportError:
-            raise StudioError("The studio engine needs Playwright: python -m pip install -r requirements-studio.txt "
+            raise StudioError("Rewind Studio needs Playwright: python -m pip install -r requirements.txt "
                               "&& python -m playwright install chromium")
         self.path = Path(workdir) / ".rewind-page.html"
         self.path.write_text(page_html(vm, style, palette), encoding="utf-8")

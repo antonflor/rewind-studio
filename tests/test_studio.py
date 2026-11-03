@@ -1,5 +1,5 @@
-"""Tests for the studio engine. Model and style checks always run; rendering runs when Playwright
-and a Chromium build are available (set REWIND_CHROMIUM to use an installed Chrome)."""
+"""Tests for the renderer. Model and style checks always run; rendering runs when Playwright and a
+Chromium build are available (set REWIND_CHROMIUM to use an installed Chrome)."""
 import json
 import re
 import tempfile
@@ -114,15 +114,16 @@ class RenderTests(unittest.TestCase):
                     session.close()
 
     def test_each_style_renders_slides_and_infographic(self):
-        from PIL import Image
+        import struct
         for style in engine.list_styles():
             with self.subTest(style=style["id"]), tempfile.TemporaryDirectory() as tmp:
                 paths = engine.render(EXAMPLE, tmp, "Test Server", style["id"], ["slides", "infographic"], "donation")
                 self.assertEqual(len(paths), 6)
                 for p in paths:
-                    with Image.open(p) as im:
-                        self.assertEqual(im.size, (1080, 1350))
-                        self.assertGreater(len(im.getcolors(1 << 20) or []), 50)  # not a blank frame
+                    head = Path(p).read_bytes()[:24]
+                    self.assertEqual(head[:8], b"\x89PNG\r\n\x1a\n")
+                    self.assertEqual(struct.unpack(">II", head[16:24]), (1080, 1350))
+                    self.assertGreater(Path(p).stat().st_size, 30_000)  # a real design, not a blank frame
 
 
 if __name__ == "__main__":

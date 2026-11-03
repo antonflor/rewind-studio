@@ -1,10 +1,10 @@
 # Getting started
 
-Rewind Studio is a **command-line program**, not yet a website. It currently produces **five 1080 × 1350 PNG slides**, which can be posted as an Instagram carousel. This guide starts with a safe sample before touching a Plex database.
+Rewind Studio is a **command-line program**, not a website. It turns your Plex server's stats into five 1080 × 1350 slides, a single-page infographic and/or an animated video, ready to post on Instagram. This guide starts with the bundled sample before touching your Plex database.
 
 ## 1. Install prerequisites
 
-Install [Python 3.10+](https://www.python.org/downloads/) and [Git](https://git-scm.com/downloads/). On Windows, check **Add Python to PATH** during installation.
+Install [Python 3.10+](https://www.python.org/downloads/) and [Git](https://git-scm.com/downloads/). On Windows, check **Add Python to PATH** during installation. For video, also install [ffmpeg](https://ffmpeg.org/download.html): `winget install ffmpeg` (Windows), `brew install ffmpeg` (macOS) or `sudo apt install ffmpeg` (Debian/Ubuntu).
 
 Open PowerShell (Windows) or Terminal (macOS/Linux):
 
@@ -30,24 +30,23 @@ Activate your environment:
 - **Windows Command Prompt:** `.venv\Scripts\activate.bat`
 - **macOS/Linux:** `source .venv/bin/activate`
 
-Then:
+Then install the dependencies and the headless browser Rewind Studio renders with:
 
 ```bash
 python -m pip install -r requirements.txt
+python -m playwright install chromium
 python rewind.py --help
 ```
 
-## 3. Generate an example — no Plex server required
+On a Linux server without a desktop, use `python -m playwright install --with-deps chromium`. Already have Chrome or Chromium? Skip the download and set `REWIND_CHROMIUM` to the browser's executable path instead.
+
+## 3. Generate an example, no Plex server required
 
 ```bash
-python rewind.py render --data examples/odyssey-2026.json --name "My Media Server" --theme odyssey --cta none --out output/demo
+python rewind.py render --data examples/odyssey-2026.json --name "My Media Server" --format both --out output/demo
 ```
 
-Look in `output/demo/` for `slide-1.png` through `slide-5.png`.
-
-![Illustration of the five generated slide layouts](images/slide-preview.svg)
-
-*This is an illustrative preview of the built-in graphic layouts, not a captured screenshot from an app UI. Output fonts may vary by operating system.*
+Look in `output/demo/` for `slide-1.png` through `slide-5.png` and `infographic.png`. Run `python rewind.py styles` to see the seven styles and try another with `--style`, for example `--style ticket`.
 
 ## 4. Find your own Plex library backup
 
@@ -92,69 +91,39 @@ Optional: edit `stats.json` to set `"library_size_label": "~10 TiB"`, which Plex
 ## 6. Generate your recap
 
 ```bash
-python rewind.py render --data stats.json --name "The Vault" --theme odyssey --cta none --out output/the-vault
+python rewind.py render --data stats.json --name "The Vault" --style editorial --format all --out output/the-vault
 ```
 
-For a thank-you ending: `--cta thanks`
+`--format all` writes the five slides, `infographic.png` and `rewind.mp4`. Use `slides`, `infographic`, `both` or `video` for less. The video takes about 30 seconds to render; add `--no-sound` for a silent one.
 
-For an optional donation message: `--cta donation --cta-text "Your support kept us online. Here's to next year!"`
+Name the server anything. Long names shrink to fit, and anything your stats don't include, like a busiest month or a music library, is left out. **Odyssey is example data, not a requirement.**
 
-You can name the server anything. **Odyssey is example data, not a requirement.**
+### The closing slide
 
-## 7. Create your own theme
+| Option | Result |
+|---|---|
+| `--cta none` | A simple "That's a wrap" (default) |
+| `--cta thanks` | A thank-you to everyone who watched |
+| `--cta donation` | A thank-you plus how to chip in for next year |
+| `--cta-text "…"` | Your own closing message |
+| `--cta-methods "Ko-fi / Venmo"` | The donation options to list (default: PayPal / Zelle / DM) |
 
-Run `python rewind.py templates` to list built-in themes and files under `templates/`.
+## 7. Recolor a style with a template
 
-Copy `templates/aurora.json` to `templates/my-theme.json`, then edit its color hex values and text labels. Run:
+`python rewind.py templates` lists the templates in `templates/`. A template gives any style new colors and, optionally, new headline text:
 
 ```bash
-python rewind.py render --data stats.json --name "The Vault" --theme my-theme --cta none --out output/my-theme
+python rewind.py render --data stats.json --name "The Vault" --style swiss --theme aurora --out output/aurora
 ```
 
-You can also use `--theme "/path/to/custom-theme.json"`. See [template reference](../templates/README.md) for supported keys and optional background images.
+Copy `templates/aurora.json` to `templates/my-theme.json` and edit it to make your own, or pass a path: `--theme "/path/to/my-theme.json"`. See the [template reference](../templates/README.md).
 
-## 8. Generate a single-page infographic
+## 8. Post to Instagram
 
-Instead of five individual slides, combine the same data into one 1080 × 1350 PNG:
+Upload the five slides as a carousel (keep their order), **or** `infographic.png` as one feed post, **or** `rewind.mp4` as a video post. Everything is 1080 × 1350 (4:5), Instagram's portrait feed size. When posting the video, choose a cover frame in Instagram's *Edit cover* step, because the video opens on a dark frame.
 
-```bash
-python rewind.py render --data stats.json --name "The Vault" --theme odyssey --cta none --format infographic --out output/one-page
-```
-
-Look for `output/one-page/infographic.png`. With `--cta donation`, the closing panel mentions PayPal, Zelle, and DM; with `--cta none`, it simply thanks viewers. Set `--format both` to generate the one-page image **and** all five slides in one command.
-
-Both formats support names other than Odyssey and the custom JSON templates in `templates/`.
-
-## 9. Post to Instagram
-
-Upload the five generated PNGs as a carousel, preserving their order, **or** upload the standalone `infographic.png` as one feed post, **or** the `rewind.mp4` from a designed style (step 10) as a video post. Everything is 1080 × 1350 (4:5), Instagram's portrait feed size. When posting the video, choose a cover frame in Instagram's *Edit cover* step: the video opens on a dark frame.
-
-## 10. Designed styles and video (optional)
-
-The designed styles render in headless Chromium and need two extra installs:
-
-```bash
-python -m pip install -r requirements-studio.txt
-python -m playwright install chromium
-```
-
-On Linux servers without a desktop, use `python -m playwright install --with-deps chromium` instead. If you already have Chrome or Chromium installed, you can skip the download and point Rewind Studio at it: set `REWIND_CHROMIUM` to the browser's executable path.
-
-```bash
-python rewind.py styles
-python rewind.py render --data stats.json --name "The Vault" --style broadsheet --cta thanks --format both --out output/broadsheet
-```
-
-For video, install [ffmpeg](https://ffmpeg.org/download.html) (`winget install ffmpeg`, `brew install ffmpeg`, or `sudo apt install ffmpeg`), then:
-
-```bash
-python rewind.py render --data stats.json --name "The Vault" --style editorial --format video --out output/video
-```
-
-Rendering takes about 30 seconds and writes `output/video/rewind.mp4`. Add `--no-sound` for a silent video. `--theme` recolors any style; `--cta` and `--cta-text` work as for the classic slides.
-
-Statistics extracted with this version also include a monthly breakdown, so designed styles can name the busiest month. Older `stats.json` files still work; that line is just left out.
+Stats extracted with this version include a monthly breakdown, so the cards can name the busiest month. Older `stats.json` files still work; that line is just left out.
 
 ## Common problems
 
-See [Troubleshooting](TROUBLESHOOTING.md). Use `python rewind.py --help`, `python rewind.py extract --help`, and `python rewind.py render --help` to inspect available options.
+See [Troubleshooting](TROUBLESHOOTING.md). `python rewind.py render --help` lists every option.
