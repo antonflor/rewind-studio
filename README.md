@@ -1,6 +1,6 @@
 # Rewind Studio
 
-**Your server. Your story.** Turn aggregated Plex playback statistics into an Instagram-ready, five-slide yearly recap. Works with **any server name**; Odyssey is merely the example dataset.
+**Your server. Your story.** Turn aggregated Plex playback statistics into an Instagram-ready, five-slide yearly recap **or a single-page infographic**. Works with **any server name**; Odyssey is merely the example dataset.
 
 ![Illustrative Rewind Studio slide layouts](docs/images/slide-preview.svg)
 
@@ -20,6 +20,20 @@ python rewind.py render --data examples/odyssey-2026.json --name "My Server" --t
 ```
 
 Your images appear at `output/slide-1.png` through `slide-5.png`.
+
+### Single-page infographic (new)
+
+Create one **1080 × 1350 PNG** containing the year's leading metrics, top TV shows and movies, library totals, and an optional closing message:
+
+```bash
+python rewind.py render --data examples/odyssey-2026.json --name "Odyssey" --theme odyssey --cta donation --format infographic --out output/infographic
+```
+
+The generated image is `output/infographic/infographic.png`.
+
+Generate **both** the five-slide carousel and the single-page image using `--format both`. The default remains `--format slides`, so existing commands continue to work.
+
+To avoid donations, use `--cta none`. Replace `--name "Odyssey"` with **any server name**. The same custom template files under `templates/` style either format.
 
 ### From your own Plex DB backup
 
@@ -58,7 +72,7 @@ You can also pass a full JSON file path to `--theme`. Custom templates currently
 2. Viewer count, playback events, estimated streaming hours, bandwidth
 3. Top TV shows and movies
 4. Library snapshot and year-to-date additions
-5. Closing slide (no donation required)
+5. Closing slide (no donation required)\n\nOr use the single-page infographic to combine the key stats into one post.
 
 The program exports aggregated counts and titles, not individual viewer histories or account names. Counts and durations depend on the database backup's coverage; play events are not completed watches.
 
