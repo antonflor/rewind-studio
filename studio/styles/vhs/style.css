@@ -108,7 +108,7 @@
 .style-vhs .cta { margin-top: auto; display: flex; flex-direction: column; gap: 14px; padding: 24px 28px; background: var(--panel); color: var(--bg); border-radius: 8px; }
 .style-vhs .cta .l { color: color-mix(in srgb, var(--bg) 70%, var(--panel)); }
 .style-vhs .methods { display: flex; flex-wrap: wrap; gap: 6px 22px; font-size: 44px; font-weight: 900; font-style: italic; font-stretch: 118%; text-transform: uppercase; letter-spacing: -.03em; line-height: 1; }
-.style-vhs .method + .method::before { content: "/"; color: var(--accent); margin-right: 26px; }
+.style-vhs .methods .method:not(:last-child)::after { content: "/"; color: var(--accent); margin-left: 26px; }
 .style-vhs .s-closing .footnote { margin-top: 18px; }
 .style-vhs .s-closing .closing-head + .footnote { margin-top: auto; }
 

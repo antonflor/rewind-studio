@@ -109,7 +109,7 @@
 .style-broadsheet .message::first-letter { float: left; font-size: 3.1em; line-height: .82; font-weight: 800; padding: 6px 6px 0 0; color: var(--accent); }
 .style-broadsheet .cta { margin-top: auto; padding-top: 20px; border-top: 6px double var(--rule); display: flex; flex-direction: column; gap: 12px; }
 .style-broadsheet .methods { display: flex; flex-wrap: wrap; gap: 6px 28px; font-size: 56px; font-weight: 700; font-style: italic; letter-spacing: -.02em; }
-.style-broadsheet .method + .method::before { content: "·"; color: var(--accent); margin-right: 28px; font-style: normal; }
+.style-broadsheet .methods .method:not(:last-child)::after { content: "·"; color: var(--accent); margin-left: 28px; font-style: normal; }
 .style-broadsheet .s-closing .footnote { margin-top: 16px; }
 .style-broadsheet .s-closing .closing-head + .footnote { margin-top: auto; }
 

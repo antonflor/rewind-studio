@@ -104,7 +104,7 @@
 .style-marquee .message { margin: 44px auto 0; max-width: 760px; }
 .style-marquee .cta { margin-top: auto; display: flex; flex-direction: column; gap: 18px; padding: 26px 0 22px; border-top: 3px solid var(--line); border-bottom: 3px solid var(--line); }
 .style-marquee .methods { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px 28px; font-size: 60px; white-space: nowrap; }
-.style-marquee .method + .method::before { content: "·"; color: var(--accent); margin-right: 28px; }
+.style-marquee .methods .method:not(:last-child)::after { content: "·"; color: var(--accent); margin-left: 28px; }
 .style-marquee .s-closing .footnote { margin-top: 22px; }
 .style-marquee .s-closing .closing-head + .footnote { margin-top: auto; }
 

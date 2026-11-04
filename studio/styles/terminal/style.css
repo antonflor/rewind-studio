@@ -110,7 +110,7 @@
 .style-terminal .message { margin-top: 40px; max-width: 860px; }
 .style-terminal .cta { margin-top: auto; border: 2px solid var(--dim); padding: 20px 24px; display: flex; flex-direction: column; gap: 10px; }
 .style-terminal .methods { display: flex; flex-wrap: wrap; gap: 6px 24px; font-size: 64px; color: var(--accent); text-transform: lowercase; }
-.style-terminal .method + .method::before { content: "|"; color: var(--dim); margin-right: 24px; }
+.style-terminal .methods .method:not(:last-child)::after { content: "|"; color: var(--dim); margin-left: 24px; }
 .style-terminal .s-closing .footnote { margin-top: 16px; }
 .style-terminal .s-closing .closing-head + .footnote { margin-top: auto; }
 
