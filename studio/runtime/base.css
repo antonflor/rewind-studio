@@ -43,7 +43,8 @@ body.preview .slide { display: flex !important; margin: 0 0 40px; }
 .i-thanks { --fit: 1; min-width: 0; white-space: nowrap; overflow: hidden; }
 .i-methods { flex-shrink: 0; }
 /* overflow: hidden would also cut descenders on tight display lines: give them room without moving anything. */
-.slate-name, .s-info .title, .i-thanks, .slate-name b { padding-bottom: .16em; margin-bottom: -.16em; }
+.slate-name, .s-info .title, .i-thanks, .slate-name b { padding-bottom: .16em; margin-bottom: -.16em; flex-shrink: 0; }
+.row .nm { padding-bottom: .14em; margin-bottom: -.14em; }  /* titles are ellipsized, so they clip too */
 
 /* Decoration slots are off unless a style turns them on. */
 .deco { display: none; }

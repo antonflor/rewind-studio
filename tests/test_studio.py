@@ -108,7 +108,7 @@ class RenderTests(unittest.TestCase):
             self.assertTrue((Path(tmp) / "rel-out" / "infographic.png").is_file())
 
     def test_long_server_name_fits(self):
-        """Shrink-to-fit keeps any server name inside its box in every style."""
+        """Any server name fits its box, and no text is cut off, in every style."""
         vm = model.build(EXAMPLE, "Movie Night at the Garcia House", "donation")
         for style in engine.list_styles():
             with self.subTest(style=style["id"]), tempfile.TemporaryDirectory() as tmp:
@@ -122,6 +122,12 @@ class RenderTests(unittest.TestCase):
                             .filter((e) => e.scrollWidth > e.clientWidth + 1 && getComputedStyle(e).overflow === 'hidden')
                             .map((e) => e.className || e.tagName)""", sid)
                         self.assertEqual(clipped, [], sid)
+                        # nothing that hides overflow may cut glyphs off vertically (descenders, squashed boxes)
+                        squashed = session.page.evaluate("""(id) => [...document.querySelectorAll(`.slide[data-slide="${id}"] *`)]
+                            .filter((e) => !e.closest('.deco') && getComputedStyle(e).overflow === 'hidden'
+                                    && e.children.length < 3 && e.scrollHeight > e.clientHeight + 1)
+                            .map((e) => e.className || e.tagName)""", sid)
+                        self.assertEqual(squashed, [], sid)
                 finally:
                     session.close()
 
