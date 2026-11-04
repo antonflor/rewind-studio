@@ -1,0 +1,15 @@
+{
+  "name": "Editorial",
+  "description": "Warm ink on near-black, Plex gold, condensed numerals. The default.",
+  "fonts": [
+    "Archivo",
+    "JetBrains Mono"
+  ],
+  "palette": {
+    "bg": "#12110f",
+    "panel": "#1c1a17",
+    "accent": "#e5a00d",
+    "secondary": "#a39b8f",
+    "fg": "#f2ede4"
+  }
+}

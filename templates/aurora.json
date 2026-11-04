@@ -1,6 +1,5 @@
 {
   "name": "Aurora",
-  "extends": "odyssey",
   "colors": {
     "bg": "#10142d",
     "panel": "#1c2640",
@@ -9,14 +8,11 @@
     "fg": "#ffffff"
   },
   "labels": {
-    "cover_title": "YOUR REWIND",
-    "cover_subtitle": "A YEAR OF STORIES",
-    "cover_footer": "Made for movie nights.",
-    "stats_title": "YOUR YEAR IN NUMBERS",
-    "titles_title": "FAN FAVORITES",
-    "library_title": "THE COLLECTION",
-    "closing_title": "THAT'S A WRAP",
-    "closing_subtitle": "SEE YOU NEXT YEAR",
-    "closing_footer": "YOUR SERVER. YOUR STORY."
+    "cover_title": "Your Rewind",
+    "cover_subtitle": "A year of stories, in real numbers.",
+    "stats_title": "Your year in numbers",
+    "titles_title": "Fan favorites",
+    "library_title": "The collection",
+    "closing_title": "That's a wrap."
   }
 }

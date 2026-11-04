@@ -1,4 +1,4 @@
-name: Smoke tests
+name: Tests
 on:
   push:
   pull_request:
@@ -12,12 +12,25 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install dependencies
-        run: python -m pip install -r requirements.txt
-      - name: Run unit tests
+        run: |
+          python -m pip install -r requirements.txt
+          python -m playwright install --with-deps chromium
+          sudo apt-get update && sudo apt-get install -y ffmpeg
+      - name: Run unit tests (including a render of every style)
         run: python -m unittest discover -s tests -v
-      - name: Test example render
-        run: python rewind.py render --data examples/odyssey-2026.json --name "Sample Server" --theme forest --cta none --out output/smoke
-      - name: Test infographic export
-        run: python rewind.py render --data examples/odyssey-2026.json --name "Sample Server" --theme aurora --cta donation --format infographic --out output/infographic
-      - name: Verify outputs
-        run: test "$(find output/smoke -name 'slide-*.png' | wc -l)" -eq 5 && test -s output/infographic/infographic.png
+      - name: Render every style
+        run: |
+          for style in $(python rewind.py styles | cut -d' ' -f1); do
+            python rewind.py render --data examples/odyssey-2026.json --name "Sample Server" --style "$style" --cta donation --format both --out "output/styles/$style"
+            test "$(find "output/styles/$style" -name '*.png' | wc -l)" -eq 6
+          done
+      - name: Render with a template
+        run: python rewind.py render --data examples/odyssey-2026.json --name "Sample Server" --style swiss --theme aurora --format infographic --out output/template && test -s output/template/infographic.png
+      - name: Render a video
+        run: |
+          python rewind.py render --data examples/odyssey-2026.json --name "Sample Server" --format video --out output/video
+          test -s output/video/rewind.mp4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: renders
+          path: output/

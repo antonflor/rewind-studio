@@ -1,0 +1,148 @@
+/* Ticket — each slide is an admit-one ticket lying on a dark desk. Cream stock (--panel), ink (--fg),
+   a perforated stub across the top, typewriter details, one red stamp (--accent) per slide.
+   Ranked lists use dotted leaders instead of bars. */
+.style-ticket {
+  --ink: var(--fg);
+  --rule: color-mix(in srgb, var(--fg) 30%, var(--panel));
+  --tall: "Bebas Neue", "Archivo", sans-serif;
+  --type: "Space Mono", ui-monospace, monospace;
+}
+.style-ticket .slide { background: var(--bg); padding: 0; }
+/* the ticket card: the slide's ::before draws the stock, content sits inside the padding */
+.style-ticket .slide::before { content: ""; position: absolute; inset: 56px 52px; background: var(--panel); border-radius: 18px;
+  -webkit-mask: radial-gradient(circle 26px at 0 232px, transparent 25px, #000 26px) left / 51% 100% no-repeat,
+               radial-gradient(circle 26px at 100% 232px, transparent 25px, #000 26px) right / 51% 100% no-repeat;
+          mask: radial-gradient(circle 26px at 0 232px, transparent 25px, #000 26px) left / 51% 100% no-repeat,
+               radial-gradient(circle 26px at 100% 232px, transparent 25px, #000 26px) right / 51% 100% no-repeat; }
+.style-ticket .slide > * { position: relative; }
+.style-ticket .slide { padding: 92px 104px 100px; color: var(--ink); font-family: var(--type); }
+
+/* stub: slate + perforation line at y = 288 (56 + 232) */
+.style-ticket .slate { height: 194px; padding-bottom: 22px !important; display: flex; flex-direction: column; justify-content: space-between; gap: 14px; border-bottom: 3px dashed var(--rule); margin: 0 -52px; padding: 0 52px; }
+.style-ticket .slate-name { display: flex; justify-content: space-between; align-items: baseline; font-size: 20px; text-transform: uppercase; letter-spacing: .14em; color: var(--muted); }
+.style-ticket .slate-name b { --fit: 1; flex: 0 1 auto; min-width: 0; overflow: hidden; white-space: nowrap; margin-left: 24px; font-family: var(--tall); font-size: 68px; letter-spacing: .04em; color: var(--ink); font-weight: 400; order: 2; line-height: 1; }
+.style-ticket .slate-sep { display: none; }
+.style-ticket .slate-no { font-family: var(--tall); font-size: 40px; letter-spacing: .1em; line-height: 1; letter-spacing: .14em; color: var(--muted); }
+.style-ticket .slate-no::before { content: "Admit one · No. "; }
+.style-ticket .s-info .slate-no::before { content: "Admit one · "; }
+.style-ticket .s-info .slate-no { font-size: 32px; }
+
+.style-ticket .l, .style-ticket .range, .style-ticket .progress-head, .style-ticket .p { font-size: 20px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.style-ticket .footnote, .style-ticket .n, .style-ticket .extra { font-size: 19px; line-height: 1.5; color: var(--muted); }
+.style-ticket .title, .style-ticket .year, .style-ticket .v, .style-ticket .thanks, .style-ticket .methods { font-family: var(--tall); font-weight: 400; line-height: .9; letter-spacing: .01em; }
+.style-ticket .title { font-size: 128px; margin-top: 44px; }
+.style-ticket .range { margin-top: 10px; }
+.style-ticket .lede, .style-ticket .note, .style-ticket .message, .style-ticket .callout { font-size: 27px; line-height: 1.5; }
+.style-ticket .bar { display: none; }
+/* the stamp: a rotated, boxed figure in red */
+.style-ticket .stamp, .style-ticket .s-numbers .hero .v, .style-ticket .s-cover .year, .style-ticket .thanks .t2 {
+  color: var(--accent); }
+
+/* cover */
+.style-ticket .cover-head { margin-top: 64px; }
+.style-ticket .s-cover .title { margin-top: 0; font-size: 100px; letter-spacing: .06em; }
+.style-ticket .s-cover .year { display: inline-block; font-size: 380px; line-height: .8; padding: 26px 34px 6px; border: 10px solid var(--accent); transform: rotate(-4deg); margin: 30px 0 0 6px; }
+.style-ticket .s-cover .lede { margin-top: 46px; }
+.style-ticket .progress { margin-top: auto; display: flex; flex-direction: column; gap: 12px; }
+.style-ticket .progress-head { display: flex; justify-content: space-between; }
+.style-ticket .progress-head em { color: var(--accent); }
+.style-ticket .track { height: 22px; border: 2px solid var(--ink); }
+.style-ticket .track .fill { display: block; }
+.style-ticket .track .fill > i { background: repeating-linear-gradient(90deg, var(--ink) 0 6px, transparent 6px 10px); }
+.style-ticket .tick { width: 2px; background: var(--panel); }
+.style-ticket .busy-mark { display: none; }
+.style-ticket .month-row { height: 22px; font-size: 17px; color: var(--muted); }
+.style-ticket .month.busy { color: var(--accent); font-weight: 700; }
+.style-ticket .kpis { margin-top: 34px; padding-top: 26px; border-top: 3px dashed var(--rule); display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.style-ticket .kpi { display: flex; flex-direction: column; gap: 6px; }
+.style-ticket .kpi .v { font-size: 76px; }
+.style-ticket .foot { display: none; }
+
+/* numbers */
+.style-ticket .s-numbers .hero { margin-top: 30px; display: flex; flex-direction: column; align-items: flex-start; }
+.style-ticket .s-numbers .hero .v { font-size: 250px; line-height: .8; padding: 22px 30px 4px; border: 10px solid var(--accent); transform: rotate(-3deg); margin: 10px 0 0 6px; }
+.style-ticket .s-numbers .hero .l { margin-top: 30px; }
+.style-ticket .hero .note { margin-top: 8px; }
+.style-ticket .stats { margin-top: 34px; padding-top: 26px; border-top: 3px dashed var(--rule); display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.style-ticket .stat { display: flex; flex-direction: column; gap: 6px; }
+.style-ticket .stat .v { font-size: 92px; }
+.style-ticket .unit { font-size: .45em; margin-left: .15em; }
+.style-ticket .busiest { margin-top: auto; padding-top: 22px; border-top: 3px dashed var(--rule); display: flex; justify-content: space-between; align-items: flex-end; }
+.style-ticket .busiest-name, .style-ticket .busiest-detail { display: flex; flex-direction: column; gap: 6px; }
+.style-ticket .busiest-detail { text-align: right; }
+.style-ticket .busiest .v { font-size: 92px; }
+.style-ticket .busiest .d { font-size: 24px; font-weight: 700; }
+.style-ticket .s-numbers .monthly { display: none; }
+
+/* watched: dotted leaders */
+.style-ticket .s-watched .title { font-size: 104px; }
+.style-ticket .s-watched .list { margin-top: 40px; display: flex; flex-direction: column; }
+.style-ticket .list > .l { padding-bottom: 6px; }
+.style-ticket .row { display: flex; align-items: baseline; gap: 14px; padding: 14px 0; font-size: 34px; }
+.style-ticket .rk { color: var(--muted); }
+.style-ticket .nm { flex: 0 1 auto; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; letter-spacing: .02em; }
+.style-ticket .row::after { content: ""; order: 2; flex: 1 1 40px; border-bottom: 3px dotted var(--rule); transform: translateY(-6px); }
+.style-ticket .pl { order: 3; font-weight: 700; }
+.style-ticket .lead .pl { color: var(--accent); }
+.style-ticket .callout { margin-top: auto; padding-top: 22px; border-top: 3px dashed var(--rule); }
+.style-ticket .callout b { color: var(--accent); font-weight: 700; }
+.style-ticket .s-watched .footnote { margin-top: 10px; }
+
+/* library */
+.style-ticket .s-library .lede { margin-top: 12px; }
+.style-ticket .lede b { color: var(--accent); }
+.style-ticket .s-library .counts { margin-top: 36px; display: grid; grid-template-columns: repeat(2, 1fr); row-gap: 28px; column-gap: 24px; }
+.style-ticket .count-item { display: flex; flex-direction: column; gap: 6px; }
+.style-ticket .s-library .count-item .v { font-size: 100px; }
+.style-ticket .s-library .added { margin-top: auto; padding-top: 24px; border-top: 3px dashed var(--rule); display: flex; flex-direction: column; gap: 14px; }
+.style-ticket .share { display: flex; align-items: baseline; gap: 14px; font-size: 26px; }
+.style-ticket .share .k b { font-weight: 700; }
+.style-ticket .share .k > span { color: var(--muted); }
+.style-ticket .share::after { content: ""; order: 2; flex: 1 1 40px; border-bottom: 3px dotted var(--rule); }
+.style-ticket .share .p { order: 3; color: var(--accent); font-weight: 700; letter-spacing: .06em; }
+.style-ticket .extra { margin-top: 4px; }
+
+/* closing */
+.style-ticket .closing-head { margin-top: 60px; }
+.style-ticket .thanks { font-size: 250px; }
+.style-ticket .thanks .t1, .style-ticket .thanks .t2 { display: block; }
+.style-ticket .thanks .t2 { display: inline-block; margin-top: 20px; padding: 18px 30px 0; border: 10px solid var(--accent); transform: rotate(-4deg); }
+.style-ticket .message { margin-top: 50px; max-width: 800px; }
+.style-ticket .cta { margin-top: auto; padding-top: 24px; border-top: 3px dashed var(--rule); display: flex; flex-direction: column; gap: 14px; }
+.style-ticket .methods { display: flex; flex-wrap: wrap; gap: 8px 30px; font-size: 64px; }
+.style-ticket .method + .method::before { content: "/"; color: var(--rule); margin-right: 30px; }
+.style-ticket .s-closing .footnote { margin-top: 18px; }
+.style-ticket .s-closing .closing-head + .footnote { margin-top: auto; }
+
+/* infographic: one long ticket */
+.style-ticket .s-info { padding: 92px 96px 96px; }
+.style-ticket .s-info .slate { height: 194px; }
+.style-ticket .s-info .title { margin-top: 24px; font-size: 84px; }
+.style-ticket .i-top { margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items: center; }
+.style-ticket .s-info .hero { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+.style-ticket .s-info .hero .v { font-size: 150px; line-height: .8; padding: 16px 20px 2px; border: 8px solid var(--accent); color: var(--accent); transform: rotate(-3deg); }
+.style-ticket .s-info .l { font-size: 16px; }
+.style-ticket .side-row { display: flex; align-items: baseline; gap: 12px; padding: 4px 0; }
+.style-ticket .side-row::after { content: ""; order: 2; flex: 1; border-bottom: 3px dotted var(--rule); }
+.style-ticket .side-row .l { order: 3; }
+.style-ticket .side-row .v { font-size: 54px; }
+.style-ticket .s-info .progress { margin-top: 20px; gap: 8px; }
+.style-ticket .s-info .progress-head { font-size: 15px; }
+.style-ticket .s-info .track { height: 16px; }
+.style-ticket .s-info .busy-mark { display: block; background: var(--accent); top: -5px; bottom: -5px; }
+.style-ticket .s-info .month-row { font-size: 14px; height: 18px; }
+.style-ticket .i-lists, .style-ticket .i-library { margin-top: 18px; padding-top: 16px; border-top: 3px dashed var(--rule); display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
+.style-ticket .s-info .row { font-size: 20px; padding: 6px 0; gap: 8px; }
+.style-ticket .s-info .row::after { border-bottom-width: 2px; transform: translateY(-4px); }
+.style-ticket .s-info .counts { margin-top: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 18px; }
+.style-ticket .s-info .count-item { gap: 0; }
+.style-ticket .s-info .count-item .v { font-size: 50px; }
+.style-ticket .s-info .count-item .l { font-size: 14px; }
+.style-ticket .s-info .added { display: flex; flex-direction: column; gap: 6px; }
+.style-ticket .s-info .share { font-size: 18px; gap: 8px; }
+.style-ticket .s-info .share::after { border-bottom-width: 2px; }
+.style-ticket .i-foot { margin-top: auto; padding-top: 16px; border-top: 3px dashed var(--rule); display: flex; justify-content: space-between; align-items: baseline; gap: 20px; }
+.style-ticket .i-thanks { font-family: var(--tall); font-size: 40px; white-space: nowrap; line-height: 1; color: var(--accent); }
+.style-ticket .i-methods { font-size: 16px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.style-ticket .i-methods .method + .method::before { content: " / "; }
+.style-ticket .s-info .footnote { margin-top: 6px; font-size: 14px; }

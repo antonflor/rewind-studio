@@ -1,23 +1,21 @@
-# Custom slide templates
+# Templates
 
-Place a JSON theme file in this folder, for example `templates/my-server.json`. The renderer loads it by name:
+A template recolors any style and can change its headline text. It's a small JSON file in this folder, for example `templates/my-server.json`:
 
 ```bash
 python rewind.py templates
-python rewind.py render --data examples/odyssey-2026.json --name "My Media Server" --theme my-server --cta none --out output/my-server
+python rewind.py render --data examples/odyssey-2026.json --name "My Media Server" --style swiss --theme my-server --out output/my-server
 ```
 
-Or pass any file path: `--theme /path/to/theme.json`.
+You can also pass any file path: `--theme /path/to/theme.json`.
 
-Copy `templates/aurora.json` to create your own. Supported keys:
+Copy `aurora.json` to start. Supported keys:
 
-- `extends`: built-in base theme, `odyssey` or `minimal`
-- `colors`: `bg`, `panel`, `accent`, `secondary`, `fg` (CSS-style hex values)
-- `labels`: `cover_title`, `cover_subtitle`, `cover_footer`, `stats_title`, `titles_title`, `library_title`, `closing_title`, `closing_subtitle`, `closing_footer`
-- `background`: optional PNG/JPG file path **relative to the template JSON**. Images are cropped to fit and blended at 25% opacity to keep text legible.
+- `colors`: any of `bg` (background), `panel` (raised surfaces and bar tracks), `accent` (the one highlight color), `secondary` (labels and captions) and `fg` (main text), as hex values like `#1c2640`. Colors you leave out keep the style's own.
+- `labels`: any of `cover_title`, `cover_subtitle`, `stats_title`, `titles_title`, `library_title`, `info_title`, `closing_title`, `closing_footer`, `cta_methods` (slash-separated, like `"Ko-fi / Venmo"`). Labels you leave out keep the defaults.
 
-**Limitations:** Custom templates change colors, labels, and background photography. They do **not yet** support arbitrary slide positioning, custom fonts, or per-slide layouts. These would need a future layout schema. Templates are JSON only and cannot execute arbitrary code.
+Check that text stays readable: `fg` and `secondary` on `bg` should have a contrast ratio of at least 4.5:1.
 
-Export size is 1080 × 1350 pixels (4:5); set your source image to that aspect ratio for best results.
+Templates are JSON only and can't run code. Layout and typography belong to the style; to change those, [make a style](../studio/styles/README.md).
 
-Privacy: Keep user data and licensed posters out of the public template directory. Templates should contain reusable design settings, not real account identifiers.
+Privacy: keep account names and licensed artwork out of templates you share. Templates should hold reusable design settings only.

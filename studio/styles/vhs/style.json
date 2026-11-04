@@ -1,0 +1,15 @@
+{
+  "name": "VHS",
+  "description": "Rental-tape label: stripe band, wide italic caps, tape counter.",
+  "fonts": [
+    "Archivo",
+    "Space Mono"
+  ],
+  "palette": {
+    "bg": "#121216",
+    "panel": "#ece6d8",
+    "accent": "#f26b1d",
+    "secondary": "#a7a294",
+    "fg": "#f5f1e8"
+  }
+}

@@ -1,122 +1,177 @@
 # Rewind Studio
 
-> **Open-source, local-first Plex Year in Review generator.** Create Instagram-ready slides or a single-page infographic from a safe Plex database backup. Custom themes, any server name, optional donation message, and no hosted service required.
+**A Plex year in review for any server.** Turn your server's playback stats into an Instagram-ready recap: five slides, a single-page infographic, or a 30-second animated video with sound, in seven designed styles. It all runs on your own machine from a backup of your Plex database. There's no hosted service, Plex token or account involved.
 
-**Your server. Your story.** Turn aggregated Plex playback statistics into an Instagram-ready, five-slide yearly recap **or a single-page infographic**. Works with **any server name**; Odyssey is merely the example dataset.
+![Five recap slides, each in a different style](docs/images/hero.jpg)
 
-![Illustrative Rewind Studio slide layouts](docs/images/slide-preview.svg)
+## What you get
 
-*Illustrative graphic preview (not a browser screenshot). Current exports are 1080 × 1350 PNG images, not MP4 videos.*
+| Output | Files | Best for |
+|---|---|---|
+| Five slides | `slide-1.png` … `slide-5.png` | An Instagram carousel |
+| Infographic | `infographic.png` | One feed post with everything on it |
+| Video | `rewind.mp4` (about 30 s, with sound) | A video post |
 
-## Start here
+Everything is 1080 × 1350 (4:5), Instagram's portrait feed size.
 
-**[Full setup guide: Windows, macOS, Linux, Docker, NAS / seedbox](docs/GETTING_STARTED.md)** · **[Custom theme reference](templates/README.md)** · **[Troubleshooting](docs/TROUBLESHOOTING.md)**
+The slides cover the year in order: **the cover** with how far into the year the stats run, **the numbers** (plays, hours, viewers, data delivered, the busiest month), **what everyone watched** (top shows and movies), **the library** (what's on the server and how much of it is new this year), and **a closing slide** that can thank people or ask for donations.
 
-Requirements: Python 3.10+ and Pillow. No hosted service, Plex authentication token, or AI account is required.
+| The video | The infographic |
+|:---:|:---:|
+| <img src="docs/images/video-preview.gif" width="360" alt="The start of a video export: the cover fades in, then the plays count up and bars grow"> | <img src="docs/images/infographic.png" width="360" alt="A single-page infographic for a server called The Vault"> |
+
+## Quick start
+
+You need [Python 3.10+](https://www.python.org/downloads/). For video, also install [ffmpeg](https://ffmpeg.org/download.html).
 
 ```bash
 git clone https://github.com/antonflor/rewind-studio.git
 cd rewind-studio
 python -m pip install -r requirements.txt
-python rewind.py render --data examples/odyssey-2026.json --name "My Server" --theme odyssey --cta none --out output
+python -m playwright install chromium
+
+python rewind.py render --data examples/odyssey-2026.json --name "The Vault" --format all --out output
 ```
 
-Your images appear at `output/slide-1.png` through `slide-5.png`.
+![Listing the styles and rendering everything in the ticket style](docs/images/cli.png)
 
-### Choose your output format
+*`python rewind.py styles` lists the designs. Add `--style` to pick one; this run used `--style ticket`.*
 
-Use `--format` with **any** server name and any built-in or custom theme.
+That renders the bundled example stats under the name "The Vault": five slides, the infographic and the video, in `output/`. Change `--name` to your server's name. Any name works, from "Jones" to "Movie Night at the Garcia House"; long names shrink to fit.
 
-| Option | Files generated | Best for |
-|---|---|---|
-| `--format slides` | `slide-1.png` through `slide-5.png` | Instagram carousel (default) |
-| `--format infographic` | `infographic.png` | Single Instagram feed image |
-| `--format both` | All six PNG files | Both layouts in one run |
+Then [make one from your own server](#your-own-server).
 
-```bash
-python rewind.py render --data stats.json --name "The Vault" --format slides --out output
-python rewind.py render --data stats.json --name "The Vault" --format infographic --out output
-python rewind.py render --data stats.json --name "The Vault" --format both --out output
-```
+## Styles
 
-All exports are 1080 × 1350 PNGs. Donations are optional using `--cta none|thanks|donation`.
+Pick one with `--style`. Every style draws the same numbers. These are the seven covers, left to right: editorial, marquee, ticket, broadsheet, terminal, swiss, vhs.
 
-### Single-page infographic preview
+![The cover slide in each of the seven styles](docs/images/styles-overview.jpg)
 
-![Example Odyssey 2026 single-page infographic](docs/images/odyssey-infographic-preview.svg)
+Open a style to see all five slides and the infographic.
 
-*SVG recreation of the generated infographic using the real Odyssey sample statistics. It illustrates the current infographic layout; the command below produces a full-resolution PNG.*
+<details>
+<summary><b><code>editorial</code></b>: warm ink on near-black, Plex gold, condensed numerals, mono labels. Quiet and data-first. The default.</summary>
+<br>
 
-### Single-page infographic (new)
+![Editorial style: five slides and the infographic](docs/images/styles/editorial.jpg)
 
-Create one **1080 × 1350 PNG** containing the year's leading metrics, top TV shows and movies, library totals, and an optional closing message:
+</details>
 
-```bash
-python rewind.py render --data examples/odyssey-2026.json --name "Odyssey" --theme odyssey --cta donation --format infographic --out output/infographic
-```
+<details>
+<summary><b><code>marquee</code></b>: a movie-palace sign with a bulb frame, tall caps and letter-board rows.</summary>
+<br>
 
-The generated image is `output/infographic/infographic.png`.
+![Marquee style: five slides and the infographic](docs/images/styles/marquee.jpg)
 
-Generate **both** the five-slide carousel and the single-page image using `--format both`. The default remains `--format slides`, so existing commands continue to work.
+</details>
 
-To avoid donations, use `--cta none`. Replace `--name "Odyssey"` with **any server name**. The same custom template files under `templates/` style either format.
+<details>
+<summary><b><code>ticket</code></b>: admit-one ticket stock with a perforated stub, typewriter details and a red stamp.</summary>
+<br>
 
-### From your own Plex DB backup
+![Ticket style: five slides and the infographic](docs/images/styles/ticket.jpg)
 
-Obtain a **complete standalone scheduled backup** of your Plex library database (never copy the live SQLite file while Plex is writing). **Every installation can have a different file path.** Use `--db` to point to your own backup:
+</details>
 
-```bash
-python rewind.py extract --db "/full/path/to/your/plex-backup.db" --year 2026 --out stats.json
-python rewind.py render --data stats.json --name "The Vault" --theme odyssey --cta thanks --out output
-```
+<details>
+<summary><b><code>broadsheet</code></b>: a newspaper front page with your server's name as the masthead, serif headlines and column rules.</summary>
+<br>
 
-See the [setup guide](docs/GETTING_STARTED.md) for common Windows, macOS, Linux, Docker, and hosted seedbox locations.
+![Broadsheet style: five slides and the infographic](docs/images/styles/broadsheet.jpg)
 
-### Custom themes
+</details>
 
-All user-contributed templates live in **[`templates/`](templates/)**. Copy `aurora.json` or `forest.json`, edit hex colors, copy, and optionally add a local background JPG/PNG.
+<details>
+<summary><b><code>terminal</code></b>: an amber-phosphor console with shell prompts, pixel numerals and block bars. In video, lines print like terminal output.</summary>
+<br>
 
-```bash
-python rewind.py templates
-python rewind.py render --data stats.json --name "Movie Night" --theme aurora --cta none --out output/aurora
-```
+![Terminal style: five slides and the infographic](docs/images/styles/terminal.jpg)
 
-You can also pass a full JSON file path to `--theme`. Custom templates currently support colors, selected text labels, and a blended background; custom slide geometry and custom fonts are not available yet.
+</details>
 
-### Optional closing slide
+<details>
+<summary><b><code>swiss</code></b>: International Typographic Style. Poster-scale grotesk, a strict grid, one red.</summary>
+<br>
 
-| Setting | Result |
+![Swiss style: five slides and the infographic](docs/images/styles/swiss.jpg)
+
+</details>
+
+<details>
+<summary><b><code>vhs</code></b>: a rental-tape label with a stripe band, wide italic caps and tape-counter numbers.</summary>
+<br>
+
+![VHS style: five slides and the infographic](docs/images/styles/vhs.jpg)
+
+</details>
+
+Each style is a single stylesheet over shared markup, so adding your own doesn't touch any Python. See [`studio/styles/README.md`](studio/styles/README.md).
+
+## Your own server
+
+1. **Get a standalone backup** of your Plex library database (`com.plexapp.plugins.library.db`, usually with a date suffix). Never point Rewind Studio at the live database while Plex is writing to it. The [setup guide](docs/GETTING_STARTED.md#4-find-your-own-plex-library-backup) lists where backups live on Windows, macOS, Linux, Docker and NAS installs.
+2. **Extract the stats:**
+
+   ```bash
+   python rewind.py extract --db "/full/path/to/your/plex-backup.db" --year 2026 --out stats.json
+   ```
+
+3. **Optional:** add `"library_size_label": "~10 TiB"` to `stats.json`. Plex's database doesn't know how big your library is on disk.
+4. **Render:**
+
+   ```bash
+   python rewind.py render --data stats.json --name "Your Server" --style marquee --cta thanks --format all --out output
+   ```
+
+`stats.json` holds aggregated counts and top titles only, with no account names or per-person history. It still describes your library, so look it over before sharing it.
+
+## Options
+
+| Option | What it does |
 |---|---|
-| `--cta none` | General closing, no payment request (**default**) |
-| `--cta thanks` | Thank-you message |
-| `--cta donation` | Donation message mentioning PayPal, Zelle, or DM |
-| `--cta-text "Your text"` | Override the closing message |
+| `--name "Your Server"` | Your server's name, shown on every slide (default: My Media Server) |
+| `--style NAME` | `editorial` (default), `marquee`, `ticket`, `broadsheet`, `terminal`, `swiss`, `vhs` |
+| `--format` | `slides` (default), `infographic`, `both`, `video`, `all` |
+| `--cta` | Closing slide: `none` (default), `thanks`, or `donation` |
+| `--cta-text "…"` | Write the closing message yourself |
+| `--cta-methods "Ko-fi / Venmo"` | Donation options to list (default: PayPal / Zelle / DM) |
+| `--theme NAME` | Recolor and relabel a style with a template from [`templates/`](templates/) (`aurora`, `forest`, or your own) |
+| `--no-sound` | Video without the sound bed |
 
-### What we generate
+Templates are small JSON files with five colors and optional headline text. `python rewind.py templates` lists them, and [`templates/README.md`](templates/README.md) describes the format.
 
-1. Rewind title and year
-2. Viewer count, playback events, estimated streaming hours, bandwidth
-3. Top TV shows and movies
-4. Library snapshot and year-to-date additions
-5. Closing slide (no donation required)\n\nOr use the single-page infographic to combine the key stats into one post.
+## Accurate, not decorative
 
-The program exports aggregated counts and titles, not individual viewer histories or account names. Counts and durations depend on the database backup's coverage; play events are not completed watches.
+Every number on a card comes from your stats or from plain arithmetic on them, like plays per day, the top shows' share of all plays, or how much of the library was added this year. Nothing is estimated. When your stats don't include something (no busiest month, no music library, fewer than three top titles), that part is left out rather than filled in. A "play" is a playback event, not necessarily a finished watch, and the cards say so.
 
-## Project layout
+## How it works
+
+`rewind.py extract` reads a read-only, immutable copy of your database backup. `rewind.py render` loads the shared markup with a style's stylesheet in headless Chromium (through [Playwright](https://playwright.dev/python/)) and screenshots each card. Fonts are bundled ([SIL Open Font License](studio/fonts/)), so renders look identical on every machine and never fetch anything from the network. For video, each card's motion is stepped frame by frame and encoded with ffmpeg; the sound is synthesized with numpy, so there are no audio files to license.
+
+Already have Chrome or Chromium installed? Set `REWIND_CHROMIUM` to its path and skip `playwright install`.
 
 ```text
-rewind.py                  Plex extractor + slide renderer
-requirements.txt           Pillow dependency
-examples/odyssey-2026.json   Aggregated sample data
-templates/                 Reusable user-defined themes
-docs/GETTING_STARTED.md    Complete install and usage guide
-docs/TROUBLESHOOTING.md    Common issues
-docs/images/               Documentation graphics
-output/                    Generated images (gitignored)
+rewind.py                  CLI: extract, render, styles, templates
+requirements.txt           Playwright + numpy
+examples/odyssey-2026.json Sample aggregated stats
+studio/model.py            Stats -> the numbers and sentences on the cards
+studio/base.html           Shared markup for all six cards
+studio/styles/<name>/      One stylesheet + metadata per style
+studio/runtime/            Data binding, shrink-to-fit and motion
+studio/engine.py           Chromium rendering and video export
+studio/sound.py            Synthesized sound bed
+studio/fonts/              Bundled open-license fonts
+templates/                 Color and label templates
+docs/                      Setup guide, troubleshooting, images
+docs/make_images.py        Regenerates every README image from the example stats
 ```
 
-## Current status
+## More
 
-This is an **early CLI MVP**, not a web app. It has not yet been validated across all Plex versions and operating systems. Generated graphics are simpler than the original hand-designed Odyssey slides. Automated animated MP4 export, drag-and-drop layouts, and visual editing remain future improvements.
+- [Setup guide](docs/GETTING_STARTED.md): Windows, macOS, Linux, Docker, NAS and seedbox
+- [Troubleshooting](docs/TROUBLESHOOTING.md)
+- [Make a style](studio/styles/README.md)
+
+Rewind Studio is an early command-line tool and hasn't been tested against every Plex version yet. Odyssey, the server the example stats come from, is just the sample; use any name.
 
 Not affiliated with Plex.

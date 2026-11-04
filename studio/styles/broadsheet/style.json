@@ -1,0 +1,15 @@
+{
+  "name": "Broadsheet",
+  "description": "Newspaper front page: masthead, serif headlines, column rules.",
+  "fonts": [
+    "Fraunces",
+    "Inter Tight"
+  ],
+  "palette": {
+    "bg": "#f3eee3",
+    "panel": "#e6dfd0",
+    "accent": "#b3261e",
+    "secondary": "#5d564b",
+    "fg": "#1b1915"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "Ticket",
+  "description": "Admit-one ticket: perforated stub, typewriter type, red stamp.",
+  "fonts": [
+    "Bebas Neue",
+    "Space Mono"
+  ],
+  "palette": {
+    "bg": "#1d3437",
+    "panel": "#f3ead6",
+    "accent": "#c23b26",
+    "secondary": "#6d6352",
+    "fg": "#2a241b"
+  }
+}
