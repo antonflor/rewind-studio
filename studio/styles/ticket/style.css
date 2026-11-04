@@ -110,7 +110,7 @@
 .style-ticket .message { margin-top: 50px; max-width: 800px; }
 .style-ticket .cta { margin-top: auto; padding-top: 24px; border-top: 3px dashed var(--rule); display: flex; flex-direction: column; gap: 14px; }
 .style-ticket .methods { display: flex; flex-wrap: wrap; gap: 8px 30px; font-size: 64px; }
-.style-ticket .method + .method::before { content: "/"; color: var(--rule); margin-right: 30px; }
+.style-ticket .methods .method:not(:last-child)::after { content: "/"; color: var(--rule); margin-left: 30px; }
 .style-ticket .s-closing .footnote { margin-top: 18px; }
 .style-ticket .s-closing .closing-head + .footnote { margin-top: auto; }
 

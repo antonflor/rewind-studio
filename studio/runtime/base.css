@@ -46,5 +46,8 @@ body.preview .slide { display: flex !important; margin: 0 0 40px; }
 .slate-name, .s-info .title, .i-thanks, .slate-name b { padding-bottom: .16em; margin-bottom: -.16em; flex-shrink: 0; }
 .row .nm { padding-bottom: .14em; margin-bottom: -.14em; }  /* titles are ellipsized, so they clip too */
 
+/* Donation options wrap between options, never inside one; separators trail the option before them. */
+.methods .method { white-space: nowrap; }
+
 /* Decoration slots are off unless a style turns them on. */
 .deco { display: none; }
