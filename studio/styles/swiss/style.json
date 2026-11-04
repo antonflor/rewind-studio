@@ -1,6 +1,14 @@
 {
   "name": "Swiss",
-  "description": "International Typographic Style: white paper, black grotesk at poster scale, strict grid, one red.",
-  "fonts": ["Inter Tight"],
-  "palette": { "bg": "#f4f2ee", "panel": "#e3e0da", "accent": "#d7261e", "secondary": "#5c5c5c", "fg": "#111111" }
+  "description": "Swiss poster: big grotesk type, strict grid, one red.",
+  "fonts": [
+    "Inter Tight"
+  ],
+  "palette": {
+    "bg": "#f4f2ee",
+    "panel": "#e3e0da",
+    "accent": "#d7261e",
+    "secondary": "#5c5c5c",
+    "fg": "#111111"
+  }
 }

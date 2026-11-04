@@ -87,7 +87,7 @@ class Session:
         except ImportError:
             raise StudioError("Rewind Studio needs Playwright: python -m pip install -r requirements.txt "
                               "&& python -m playwright install chromium")
-        self.path = Path(workdir) / ".rewind-page.html"
+        self.path = (Path(workdir) / ".rewind-page.html").resolve()
         self.path.write_text(page_html(vm, style, palette), encoding="utf-8")
         self._pw = sync_playwright().start()
         self.browser = _browser(self._pw)

@@ -95,6 +95,18 @@ def chromium_available():
 
 @unittest.skipUnless(chromium_available(), "Playwright/Chromium not installed")
 class RenderTests(unittest.TestCase):
+    def test_relative_output_folder(self):
+        """The CLI default is --out output, a relative path: it must work from the repo root."""
+        import os
+        import subprocess
+        import sys
+        repo = Path(__file__).resolve().parent.parent
+        with tempfile.TemporaryDirectory() as tmp:
+            subprocess.run([sys.executable, str(repo / "rewind.py"), "render", "--data", str(repo / "examples/odyssey-2026.json"),
+                            "--format", "infographic", "--out", "rel-out"], cwd=tmp, check=True, capture_output=True,
+                           env=dict(os.environ))
+            self.assertTrue((Path(tmp) / "rel-out" / "infographic.png").is_file())
+
     def test_long_server_name_fits(self):
         """Shrink-to-fit keeps any server name inside its box in every style."""
         vm = model.build(EXAMPLE, "Movie Night at the Garcia House", "donation")

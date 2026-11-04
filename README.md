@@ -16,7 +16,9 @@ Everything is 1080 × 1350 (4:5), Instagram's portrait feed size.
 
 The slides cover the year in order: **the cover** with how far into the year the stats run, **the numbers** (plays, hours, viewers, data delivered, the busiest month), **what everyone watched** (top shows and movies), **the library** (what's on the server and how much of it is new this year), and **a closing slide** that can thank people or ask for donations.
 
-<img src="docs/images/video-preview.gif" width="300" alt="The start of a video export: numbers count up and bars grow">
+| The video | The infographic |
+|:---:|:---:|
+| <img src="docs/images/video-preview.gif" width="360" alt="The start of a video export: the cover fades in, then the plays count up and bars grow"> | <img src="docs/images/infographic.png" width="360" alt="A single-page infographic for a server called The Vault"> |
 
 ## Quick start
 
@@ -31,41 +33,77 @@ python -m playwright install chromium
 python rewind.py render --data examples/odyssey-2026.json --name "The Vault" --format all --out output
 ```
 
+![Listing the styles and rendering everything in the ticket style](docs/images/cli.png)
+
+*`python rewind.py styles` lists the designs. Add `--style` to pick one; this run used `--style ticket`.*
+
 That renders the bundled example stats under the name "The Vault": five slides, the infographic and the video, in `output/`. Change `--name` to your server's name. Any name works, from "Jones" to "Movie Night at the Garcia House"; long names shrink to fit.
 
 Then [make one from your own server](#your-own-server).
 
 ## Styles
 
-Pick one with `--style`; `python rewind.py styles` lists them. Every style draws the same numbers. Each strip below shows the five slides and the infographic.
+Pick one with `--style`. Every style draws the same numbers. These are the seven covers, left to right: editorial, marquee, ticket, broadsheet, terminal, swiss, vhs.
 
-**`editorial`** (default): warm ink on near-black, Plex gold, condensed numerals, mono labels. Quiet and data-first.
+![The cover slide in each of the seven styles](docs/images/styles-overview.jpg)
 
-![Editorial style](docs/images/styles/editorial.jpg)
+Open a style to see all five slides and the infographic.
 
-**`marquee`**: a movie-palace sign with a bulb frame, tall caps and letter-board rows.
+<details>
+<summary><b><code>editorial</code></b>: warm ink on near-black, Plex gold, condensed numerals, mono labels. Quiet and data-first. The default.</summary>
+<br>
 
-![Marquee style](docs/images/styles/marquee.jpg)
+![Editorial style: five slides and the infographic](docs/images/styles/editorial.jpg)
 
-**`ticket`**: admit-one ticket stock with a perforated stub, typewriter details and a red stamp.
+</details>
 
-![Ticket style](docs/images/styles/ticket.jpg)
+<details>
+<summary><b><code>marquee</code></b>: a movie-palace sign with a bulb frame, tall caps and letter-board rows.</summary>
+<br>
 
-**`broadsheet`**: a newspaper front page with your server's name as the masthead, serif headlines and column rules.
+![Marquee style: five slides and the infographic](docs/images/styles/marquee.jpg)
 
-![Broadsheet style](docs/images/styles/broadsheet.jpg)
+</details>
 
-**`terminal`**: an amber-phosphor console with shell prompts, pixel numerals and block bars. In video, lines print like terminal output.
+<details>
+<summary><b><code>ticket</code></b>: admit-one ticket stock with a perforated stub, typewriter details and a red stamp.</summary>
+<br>
 
-![Terminal style](docs/images/styles/terminal.jpg)
+![Ticket style: five slides and the infographic](docs/images/styles/ticket.jpg)
 
-**`swiss`**: International Typographic Style. Poster-scale grotesk, a strict grid, one red.
+</details>
 
-![Swiss style](docs/images/styles/swiss.jpg)
+<details>
+<summary><b><code>broadsheet</code></b>: a newspaper front page with your server's name as the masthead, serif headlines and column rules.</summary>
+<br>
 
-**`vhs`**: a rental-tape label with a stripe band, wide italic caps and tape-counter numbers.
+![Broadsheet style: five slides and the infographic](docs/images/styles/broadsheet.jpg)
 
-![VHS style](docs/images/styles/vhs.jpg)
+</details>
+
+<details>
+<summary><b><code>terminal</code></b>: an amber-phosphor console with shell prompts, pixel numerals and block bars. In video, lines print like terminal output.</summary>
+<br>
+
+![Terminal style: five slides and the infographic](docs/images/styles/terminal.jpg)
+
+</details>
+
+<details>
+<summary><b><code>swiss</code></b>: International Typographic Style. Poster-scale grotesk, a strict grid, one red.</summary>
+<br>
+
+![Swiss style: five slides and the infographic](docs/images/styles/swiss.jpg)
+
+</details>
+
+<details>
+<summary><b><code>vhs</code></b>: a rental-tape label with a stripe band, wide italic caps and tape-counter numbers.</summary>
+<br>
+
+![VHS style: five slides and the infographic](docs/images/styles/vhs.jpg)
+
+</details>
 
 Each style is a single stylesheet over shared markup, so adding your own doesn't touch any Python. See [`studio/styles/README.md`](studio/styles/README.md).
 
@@ -125,6 +163,7 @@ studio/sound.py            Synthesized sound bed
 studio/fonts/              Bundled open-license fonts
 templates/                 Color and label templates
 docs/                      Setup guide, troubleshooting, images
+docs/make_images.py        Regenerates every README image from the example stats
 ```
 
 ## More
